@@ -1,0 +1,4 @@
+credentials/*
+!credentials/.gitkeep
+
+node_modules/*
