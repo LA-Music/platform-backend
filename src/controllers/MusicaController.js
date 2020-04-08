@@ -1,4 +1,5 @@
 const Musica = require('../models/Musica');
+require('dotenv').config()
 
 module.exports = {
     async store(req, res){
@@ -29,5 +30,30 @@ module.exports = {
             }
             
         }
+    },
+    async find(req, res){
+        const {chave, valor} = req.params;
+        Musica.find({[chave]:valor}, (err, result)=>{
+            if(err || !result.length){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                return res.json(result)
+            }
+        })
+    },
+    async findAll(req, res){
+        const { page } = req.params
+        const options = {
+            page,
+            limit: process.env.PAGINATION_LIMIT
+        }
+
+        await Musica.paginate({}, options, (err, result)=>{
+            if(err){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                return res.json(result)
+            }
+        })
     }
 };

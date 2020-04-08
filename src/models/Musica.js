@@ -1,5 +1,6 @@
 const {Schema, model} = require('mongoose');
 const Autor = require('./Autor')
+var mongoosePaginate = require('mongoose-paginate-v2');
 
 const MusicaSchema = new Schema({
     nome:{
@@ -22,5 +23,5 @@ const MusicaSchema = new Schema({
     feat:[String],
     status: Number
 },{timestamps:true});
-
+MusicaSchema.plugin(mongoosePaginate)
 module.exports = model('Musica', MusicaSchema);

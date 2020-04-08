@@ -1,4 +1,5 @@
 const {Schema, model} = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate-v2');
 
 const CreditoSchema = new Schema({
     nome:{
@@ -20,5 +21,5 @@ const CreditoSchema = new Schema({
     lista_musicas:[String],
     status: Number
 },{timestamps:true});
-
+CreditoSchema.plugin(mongoosePaginate)
 module.exports = model('Credito', CreditoSchema);
