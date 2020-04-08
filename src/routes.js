@@ -26,17 +26,17 @@ routes.post('/autentificar', Authentication.login)
 
 
 // Read Routes
-routes.get('/credito-retido/:chave/:valor', CreditoController.find)
-routes.get('/credito-retido-list/:page', CreditoController.findAll)
+routes.get('/credito-retido/:chave/:valor', AuthMiddleware.checkToken, CreditoController.find)
+routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findAll)
 
-routes.get('/musica/:chave/:valor', MusicaController.find)
-routes.get('/musica-list/:page', MusicaController.findAll)
+routes.get('/musica/:chave/:valor', AuthMiddleware.checkToken, MusicaController.find)
+routes.get('/musica-list/:page', AuthMiddleware.checkToken, MusicaController.findAll)
 
-routes.get('/marca/:chave/:valor', MarcaController.find)
-routes.get('/marca-list/:page', MarcaController.findAll)
+routes.get('/marca/:chave/:valor', AuthMiddleware.checkToken, MarcaController.find)
+routes.get('/marca-list/:page', AuthMiddleware.checkToken, MarcaController.findAll)
 
-routes.get('/contato/:chave/:valor', ContatoController.find)
-routes.get('/contato-list/:page', ContatoController.findAll)
+routes.get('/contato/:chave/:valor', AuthMiddleware.checkToken, ContatoController.find)
+routes.get('/contato-list/:page', AuthMiddleware.checkToken, ContatoController.findAll)
 
 // Update Routes
 
