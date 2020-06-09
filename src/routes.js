@@ -42,7 +42,7 @@ routes.get('/marca-list/:page', AuthMiddleware.checkToken, MarcaController.findA
 
 routes.get('/contato/:chave/:valor', AuthMiddleware.checkToken, ContatoController.find)
 routes.get('/contato-list/:page', AuthMiddleware.checkToken, ContatoController.findAll)
-routes.get('/abramus/', AbramusController.login)
+// routes.get('/abramus/', AbramusController.login)
 
 
 // Update Routes
