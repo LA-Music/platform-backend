@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const Obras = []
 const ProcessoController = require('../controllers/ProcessosController')
 
 function parseCod(obras){
@@ -38,6 +37,7 @@ function parseExecucao(obras){
 }
 
 async function AbrammusPuppet(autor, processo_id) {
+  const Obras = []
   console.log("Scraping Obras... Autor: "+autor)
   const browser = await puppeteer.launch({
     defaultViewport: null,
@@ -72,6 +72,7 @@ async function AbrammusPuppet(autor, processo_id) {
   try {
     await page.waitForSelector("#form\\:j_idt151", {visible: true})
   } catch (error) {
+    await ProcessoController.updateStatus(processo_id)
     console.log("Erro: Obras não encontradas")
     return 0; 
   }

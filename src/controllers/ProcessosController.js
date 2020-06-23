@@ -39,6 +39,13 @@ module.exports = {
         const updated = await processo.save()
         console.log("Updated")
     },
+    async updateObras(processo_id){
+        console.log("Updating")
+        const processo = await Processos.findById(processo_id)
+        processo.status = "Obras não Encontradas"
+        const updated = await processo.save()
+        console.log("Updated")
+    },
     async find(req, res){
         const {chave, valor} = req.params;
         Processos.find({[chave]:valor}, (err, result)=>{
