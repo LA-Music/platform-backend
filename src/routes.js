@@ -17,10 +17,6 @@ routes.get('/',(req,res)=>{
 
 // Create Routes
 routes.post('/credito-retido', CreditoController.store, ProcessoController.store, (req,res)=>{
-    
-    // Listagem de Processos
-    AbrammusPuppet(req.body.nome_artistico, req.processo_id)
-    
     // To Do -- Refactor Mailer to Services...
     const assunto = "Credito Retido"
     const mensagem = `<h1>Novo Credito Retido</h1> <ul><li><b>Id:</b>${req.credito_id}</li><li><b>Nome:</b>${req.body.nome}</li><li><b>Email:</b>${req.body.email}</li><li><b>Cpf:</b>${req.body.cpf}</li><li><b>Telefone:</b>${req.body.telefone}</li><li><b>Nome Artístico:</b>${req.body.nome_artistico}</li><li><b>Associação:</b>${req.body.associacao}</li></ul>`
@@ -47,10 +43,10 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           res.status(400).json({error})
-        } else {
-          res.status(200).json({msg:info.response})
         }
       });
+      // Listagem de Processos
+    AbrammusPuppet(req.body.nome_artistico, req.processo_id)
     res.status(200).json({msg:"ok"})
 })
 routes.post('/musica', MusicaController.store)
