@@ -4,7 +4,6 @@ const config = process.env.JWT_SECRET
 
 let checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
-  
   if (token) {
       if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
@@ -27,6 +26,7 @@ let checkToken = (req, res, next) => {
     });
   }
 };
+
 
 module.exports = {
   checkToken: checkToken
