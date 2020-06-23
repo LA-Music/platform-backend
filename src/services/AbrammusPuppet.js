@@ -41,7 +41,7 @@ async function AbrammusPuppet(autor, processo_id) {
   console.log("Scraping Obras... Autor: "+autor)
   const browser = await puppeteer.launch({
     defaultViewport: null,
-    args: ['--enable-features=NetworkService'],
+    args: ['--enable-features=NetworkService','--no-sandbox'],
     ignoreHTTPSErrors: true
   });
   

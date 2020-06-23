@@ -45,7 +45,6 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
           res.status(400).json({error})
         }
       });
-      // Listagem de Processos
     AbrammusPuppet(req.body.nome_artistico, req.processo_id)
     res.status(200).json({msg:"ok"})
 })
