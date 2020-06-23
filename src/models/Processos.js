@@ -3,6 +3,7 @@ var mongoosePaginate = require('mongoose-paginate-v2');
 var obraSchema = new Schema({
     codEcad:String, 
     titulo:String, 
+    autores:String, 
     interprete:String,
     competencia:String,
     faixa:String,

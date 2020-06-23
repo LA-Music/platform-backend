@@ -30,21 +30,21 @@ module.exports = {
         }
     },
     async updateObras(obrasColetadas, processo_id){
-        console.log("Updating")
+        console.log("Updating Obras")
         const processo = await Processos.findById(processo_id)
         obrasColetadas.forEach(element => {
             processo.obras.push(element)
         });
         processo.status = "Obras Encontradas"
         const updated = await processo.save()
-        console.log("Updated")
+        console.log("Obras Updated")
     },
-    async updateObras(processo_id){
-        console.log("Updating")
+    async updateStatus(processo_id){
+        console.log("Updating Status")
         const processo = await Processos.findById(processo_id)
         processo.status = "Obras não Encontradas"
         const updated = await processo.save()
-        console.log("Updated")
+        console.log("Status Updated")
     },
     async find(req, res){
         const {chave, valor} = req.params;

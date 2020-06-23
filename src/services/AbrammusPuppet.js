@@ -6,6 +6,11 @@ function parseCod(obras){
   return arrStr
 }
 
+function parseAutores(obras){
+  let arrStr = obras.match(/(?<=Autores)(.*?)(?=\s*Faixa)/g);
+  return arrStr
+}
+
 function parseTitulo(obras){
   let arrStr = obras.match(/(?<=Título)(.*?)(?=\s*Intérprete)/g);
   return arrStr
@@ -79,7 +84,6 @@ async function AbrammusPuppet(autor, processo_id) {
   
   let element = await page.$('#form\\:listasolr_data')
   let value = await page.evaluate(el => el.textContent, element)
-
 // To do - Refactor Parse as a service...
   const codEcad = parseCod(value)
   const titulo = parseTitulo(value)
@@ -88,10 +92,11 @@ async function AbrammusPuppet(autor, processo_id) {
   const faixa = parseFaixa(value)
   const motivo = parseMotivo(value)
   const execucao = parseExecucao(value)
-
+  const autores = parseAutores(value)
   for (let index = 0; index < codEcad.length; index++) {
     Obras.push({codEcad:codEcad[index], titulo:titulo[index],interprete: interprete[index], 
-      competencia: competencia[index],faixa: faixa[index], motivo: motivo[index], execucao: execucao[index]})
+      competencia: competencia[index],faixa: faixa[index], motivo: motivo[index], 
+      execucao: execucao[index], autores: autores[index]})
   }
 
   // console.log("Scraped Obras... "+JSON.stringify(Obras))
