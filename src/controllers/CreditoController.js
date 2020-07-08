@@ -12,7 +12,8 @@ module.exports = {
                 $and:[{nome_artistico},{status}]
             })
         if(creditoExists){
-            return res.status(500).json({message: "Nome artístico já cadastrado"})
+            console.log(creditoExists)
+            return res.status(500).json({message: "Nome artístico já cadastrado"+nome_artistico})
         }else{
             try {
                 const credito = await Credito.create({
