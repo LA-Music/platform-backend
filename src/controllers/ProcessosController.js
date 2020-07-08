@@ -60,6 +60,7 @@ module.exports = {
         const { page } = req.params
         const options = {
             page,
+            sort: { createdAt: -1},
             limit: process.env.PAGINATION_LIMIT
         }
 

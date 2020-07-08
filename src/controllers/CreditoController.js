@@ -1,6 +1,4 @@
 const Credito = require('../models/Credito');
-var nodemailer = require('nodemailer');
-
 require('dotenv').config()
 
 module.exports = {
@@ -48,6 +46,7 @@ module.exports = {
         const { page } = req.params
         const options = {
             page,
+            sort: { createdAt: -1},
             limit: process.env.PAGINATION_LIMIT
         }
 
