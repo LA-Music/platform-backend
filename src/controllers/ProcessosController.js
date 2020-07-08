@@ -68,6 +68,18 @@ module.exports = {
             if(err){
                 return res.status(400).json({message: "Bad Request"});                
             }else{
+                result.docs = result.docs.map(element => {
+                    return {
+                        _id:element._id,
+                        nome:element.nome,
+                        tipo:element.tipo,
+                        id_req:element.id_req,
+                        obras:element.obras,
+                        comments:element.comments,
+                        email:element.email,
+                        status:element.status,
+                        createdAt:element.createdAt.toLocaleString()}
+                });
                 return res.json(result)
             }
         })
