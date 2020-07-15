@@ -47,7 +47,7 @@ module.exports = {
         console.log("Status Updated")
     },
     async updateFonogramas(fonogramasColetados, processo_id){
-        console.log("Atualizando Fonogramas")
+        console.log("Atualizando Fonogramas: "+processo_id)
         const processo = await Processos.findById(processo_id)
         fonogramasColetados.forEach(element => {
             processo.fonogramas.push(element)
@@ -124,6 +124,8 @@ module.exports = {
                         comments:element.comments,
                         email:element.email,
                         status:element.status,
+                        status_fonograma:element.status_fonograma,
+                        fonogramas:element.fonogramas,
                         createdAt:element.createdAt.toLocaleString()}
                 });
                 req.result = result

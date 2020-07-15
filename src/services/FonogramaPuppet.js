@@ -41,6 +41,11 @@ function parseExecucao(obras){
   return arrStr
 }
 
+function parseExecucao1(obras){
+  let arrStr = obras.match(/(?<=Execuções)(.*?)(?=\s*Solicitar)/g);
+  return arrStr
+}
+
 async function FonogramaPuppet(autor, processo_id) {
   const Fonogramas = []
   console.log("Scraping Fonogramas... Autor: "+autor)
@@ -90,11 +95,11 @@ async function FonogramaPuppet(autor, processo_id) {
   const motivo = parseMotivo(value)
   const execucao = parseExecucao(value)
   const autores = parseAutores(value)
-
+  
   for (let index = 0; index < codEcad.length; index++) {
     Fonogramas.push({codEcad:codEcad[index], titulo:titulo[index],interprete: interprete[index], 
       competencia: competencia[index],faixa: faixa[index], motivo: motivo[index], 
-      execucao: execucao[index], autores: autores[index]})
+      execucao: (execucao ? execucao[index] : parseExecucao1(value)[index]), autores: autores[index]})
   }
 
   console.log("Scraped Fonogramas... "+JSON.stringify(Fonogramas))
