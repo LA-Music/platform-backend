@@ -95,6 +95,8 @@ module.exports = {
                         comments:element.comments,
                         email:element.email,
                         status:element.status,
+                        status_fonograma:element.status_fonograma,
+                        fonogramas:element.fonogramas,
                         createdAt:element.createdAt.toLocaleString()}
                 });
                 return res.json(result)
