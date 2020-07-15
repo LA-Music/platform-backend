@@ -46,6 +46,23 @@ module.exports = {
         const updated = await processo.save()
         console.log("Status Updated")
     },
+    async updateFonogramas(fonogramasColetados, processo_id){
+        console.log("Atualizando Fonogramas")
+        const processo = await Processos.findById(processo_id)
+        fonogramasColetados.forEach(element => {
+            processo.fonogramas.push(element)
+        });
+        processo.status_fonograma = "Fonogramas Encontrados"
+        const updated = await processo.save()
+        console.log("Fonogramas Atualizados")
+    },
+    async updateStatusFonogramas(processo_id, status){
+        console.log("Updating Status Fonogramas")
+        const processo = await Processos.findById(processo_id)
+        processo.status_fonograma = status
+        const updated = await processo.save()
+        console.log("Status Updated")
+    },
     async find(req, res){
         const {chave, valor} = req.params;
         Processos.find({[chave]:valor}, (err, result)=>{
@@ -81,6 +98,36 @@ module.exports = {
                         createdAt:element.createdAt.toLocaleString()}
                 });
                 return res.json(result)
+            }
+        })
+    }
+    ,
+    async findAllNext(req, res, next){
+        const { page } = req.params
+        const options = {
+            page,
+            sort: { createdAt: -1},
+            limit: process.env.PAGINATION_LIMIT
+        }
+
+        await Processos.paginate({}, options, (err, result)=>{
+            if(err){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                result.docs = result.docs.map(element => {
+                    return {
+                        _id:element._id,
+                        nome:element.nome,
+                        tipo:element.tipo,
+                        id_req:element.id_req,
+                        obras:element.obras,
+                        comments:element.comments,
+                        email:element.email,
+                        status:element.status,
+                        createdAt:element.createdAt.toLocaleString()}
+                });
+                req.result = result
+                return next()
             }
         })
     }

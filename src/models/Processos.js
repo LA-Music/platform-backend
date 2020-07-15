@@ -20,6 +20,11 @@ const ProcessosSchema = new Schema({
         required:true,
         default:"Buscando Obras"
     },
+    status_fonograma:{
+        type: String,
+        required:true,
+        default:"Buscando Fonogramas"
+    },
     tipo:{
         type:String,
         required:true,
@@ -37,6 +42,8 @@ const ProcessosSchema = new Schema({
     },
     cpf_cliente:String,
     obras:[obraSchema],
+    // Added Fonogramas
+    fonogramas:[obraSchema],
     comments:[commentSchema]
 },{timestamps:true});
 ProcessosSchema.plugin(mongoosePaginate)
