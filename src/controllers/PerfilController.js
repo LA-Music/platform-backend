@@ -4,20 +4,23 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     async store(req, res){
-        const { nome, email, senha, papel} = req.body
+        const { nome, email, senha, cpf, telefone} = req.body
         const status = 0
+        const papel = "user"
         const usuarioExists = await Perfil.findOne({
                 $and:[{email}]
             })
         if(usuarioExists){
-            return res.status(500).json({message: "Perfil previamente cadastrado"})
+            return res.status(500).json({message: "Email não disponível"})
         }else{
             try {
                 await Perfil.create({
                     nome,
                     email,
                     senha,
-                    papel
+                    papel,
+                    cpf,
+                    telefone
                 })
                 return res.status(200).json({message: "ok"})
             } catch (error) {

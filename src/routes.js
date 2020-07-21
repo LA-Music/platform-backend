@@ -52,17 +52,25 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
     FonogramaPuppet(req.body.nome, req.processo_id)
     res.status(200).json({msg:"ok"})
 })
-// routes.get('/updateAllCredito/:page', ProcessoController.findAllNext, (req,res)=>{
-//   let allProcessos = req.result.docs
-//   UpdateFonograma(allProcessos)
-//   res.status(200).json({msg:"Updating..."})
-// })
+routes.get('/updateObras', ProcessoController.findObras, (req,res)=>{
+  let allProcessos = req.result
+  UpdatePuppet(allProcessos)
+  console.log("Done")
+  res.status(200).json({msg:"Updating..."})
+})
+
+routes.get('/updateFonogramas', ProcessoController.findFonogramas, (req,res)=>{
+  let allProcessos = req.result
+  UpdateFonograma(allProcessos)
+  console.log("Done")
+  res.status(200).json({msg:"Updating..."})
+})
 
 routes.post('/musica', MusicaController.store)
 routes.post('/marca', MarcaController.store)
 routes.post('/contato', ContatoController.store)
 
-// routes.post('/registrar', PerfilController.store)
+routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
 
 // Read Routes

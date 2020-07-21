@@ -134,5 +134,25 @@ module.exports = {
                 return next()
             }
         })
-    }
+    },
+    async findObras(req, res, next){
+        Processos.find({"status":"Buscando Obras"}, (err, result)=>{
+            if(err || !result.length){
+                return res.status(400).json({message: err || result.length});                
+            }else{
+                req.result = result
+                return next()
+            }
+        })
+    },
+    async findFonogramas(req, res, next){
+        Processos.find({"status_fonograma":"Buscando Fonogramas"}, (err, result)=>{
+            if(err || !result.length){
+                return res.status(400).json({message: err || result.length});                
+            }else{
+                req.result = result
+                return next()
+            }
+        })
+    },
 };

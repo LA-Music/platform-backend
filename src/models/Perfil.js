@@ -11,6 +11,14 @@ const PerfilSchema = new Schema({
         type: String,
         required: true
     },
+    cpf:{
+      type: String,
+      required: true
+    },
+    telefone:{
+      type: String,
+      required: false
+    },
     senha:{
         type: String,
         required: true,
