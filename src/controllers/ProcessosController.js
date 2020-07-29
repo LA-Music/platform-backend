@@ -155,4 +155,13 @@ module.exports = {
             }
         })
     },
+    async checkProcesso(req, res){
+        console.log("Updating Status Fonogramas")
+        const {processo_id, check_value} = req.body
+        console.log(`${processo_id} --> ${check_value}`)
+        const processo = await Processos.findById(processo_id)
+        processo.reviewed = check_value
+        const updated = await processo.save()
+        return res.status(200).json({processo})
+    },
 };

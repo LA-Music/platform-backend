@@ -44,7 +44,9 @@ const ProcessosSchema = new Schema({
     obras:[obraSchema],
     // Added Fonogramas
     fonogramas:[obraSchema],
-    comments:[commentSchema]
+    comments:[commentSchema],
+    // Added Revisado
+    reviewed: Boolean,
 },{timestamps:true});
 ProcessosSchema.plugin(mongoosePaginate)
 module.exports = model('Processos', ProcessosSchema);

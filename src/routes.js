@@ -69,7 +69,7 @@ routes.get('/updateFonogramas', ProcessoController.findFonogramas, (req,res)=>{
 routes.post('/musica', MusicaController.store)
 routes.post('/marca', MarcaController.store)
 routes.post('/contato', ContatoController.store)
-
+routes.post('/checkProcesso', ProcessoController.checkProcesso)
 routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
 
