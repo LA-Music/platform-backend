@@ -96,6 +96,7 @@ module.exports = {
                         email:element.email,
                         status:element.status,
                         status_fonograma:element.status_fonograma,
+                        reviewed:element.reviewed,
                         fonogramas:element.fonogramas,
                         createdAt:element.createdAt.toLocaleString()}
                 });
@@ -127,6 +128,7 @@ module.exports = {
                         email:element.email,
                         status:element.status,
                         status_fonograma:element.status_fonograma,
+                        reviewed:element.reviewed,
                         fonogramas:element.fonogramas,
                         createdAt:element.createdAt.toLocaleString()}
                 });
