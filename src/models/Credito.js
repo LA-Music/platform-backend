@@ -19,6 +19,15 @@ const CreditoSchema = new Schema({
     associacao:String,
     redes_sociais:[String],
     lista_musicas:[String],
+    papel:{
+        type:String,
+        default:"artista",
+        enum:["artista", "produtor"],
+        required:true
+    },
+    nome_produtor:String,
+    email_produtor:String,
+    telefone_produtor:String,
     status: Number
 },{timestamps:true});
 CreditoSchema.plugin(mongoosePaginate)

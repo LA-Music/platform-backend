@@ -4,14 +4,14 @@ require('dotenv').config()
 module.exports = {
     
     async store(req, res, next){
-        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas } = req.body
+        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor } = req.body
         const status = 0
         const creditoExists = await Credito.findOne({
                 $and:[{nome_artistico},{status}]
             })
         if(creditoExists){
             console.log(creditoExists)
-            return res.status(500).json({message: "Nome artístico já cadastrado"+nome_artistico})
+            return res.status(500).json({message: "Nome artístico já cadastrado: "+nome_artistico})
         }else{
             try {
                 const credito = await Credito.create({
@@ -23,7 +23,11 @@ module.exports = {
                     associacao,
                     redes_sociais,
                     lista_musicas,
-                    status
+                    status,
+                    papel,
+                    nome_produtor,
+                    email_produtor,
+                    telefone_produtor
                 })
                 req.credito_id = credito._id
                 return next()
