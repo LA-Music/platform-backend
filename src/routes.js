@@ -63,7 +63,7 @@ routes.get('/updateFonogramas', ProcessoController.findFonogramas, (req,res)=>{
   let allProcessos = req.result
   UpdateFonograma(allProcessos)
   console.log("Done")
-  res.status(200).json({msg:"Updating..."})
+  res.status(200).json({msg:allProcessos.length})
 })
 
 routes.post('/musica', MusicaController.store)

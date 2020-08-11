@@ -59,7 +59,11 @@ module.exports = {
                 return res.status(400).json({message: "Bad Request"});                
             }else{
                 result.docs = result.docs.map(element => {
-                    return {_id:element._id,nome:element.nome,email:element.email,cpf:element.cpf,telefone:element.telefone,nome_artistico:element.nome_artistico,associacao:element.associacao,status:element.status,createdAt:element.createdAt.toLocaleString()}
+                    return {_id:element._id,nome:element.nome,email:element.email,
+                        cpf:element.cpf,telefone:element.telefone,nome_artistico:element.nome_artistico,
+                        associacao:element.associacao,status:element.status,createdAt:element.createdAt.toLocaleString(),
+                        nome_produtor:element.nome_produtor, telefone_produtor:element.telefone_produtor
+                    }
                 });
                 
                 return res.json(result)

@@ -26,7 +26,7 @@ const CreditoSchema = new Schema({
         required:true
     },
     nome_produtor:String,
-    email_produtor:String,
+    // email_produtor:String,
     telefone_produtor:String,
     status: Number
 },{timestamps:true});
