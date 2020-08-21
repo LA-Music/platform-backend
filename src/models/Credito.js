@@ -11,8 +11,7 @@ const CreditoSchema = new Schema({
         required: true,
     },
     cpf:{
-        type: String,
-        required: true,
+        type: String
     },
     telefone:String,
     nome_artistico:String,
