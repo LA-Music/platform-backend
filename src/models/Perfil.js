@@ -24,6 +24,8 @@ const PerfilSchema = new Schema({
         required: true,
     },
     url:String,
+    termos:Boolean,
+    newsletter:Boolean,
     papel:{
       type:String,
       default:"user",
