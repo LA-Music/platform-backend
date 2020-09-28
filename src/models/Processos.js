@@ -42,10 +42,9 @@ const ProcessosSchema = new Schema({
     },
     cpf_cliente:String,
     obras:[obraSchema],
-    // Added Fonogramas
     fonogramas:[obraSchema],
     comments:[commentSchema],
-    // Added Revisado
+    cadastro_Abrammus:Boolean,
     reviewed: Boolean,
 },{timestamps:true});
 ProcessosSchema.plugin(mongoosePaginate)

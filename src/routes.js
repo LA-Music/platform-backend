@@ -11,6 +11,7 @@ const AuthMiddleware = require('./middlewares/Authmiddleware')
 const PerfilController = require('./controllers/PerfilController')
 const AbrammusPuppet = require('./services/AbrammusPuppet')
 const FonogramaPuppet = require('./services/FonogramaPuppet')
+const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
 const UpdateFonograma = require('./services/UpdateFonograma')
 const ProcessoController = require('./controllers/ProcessosController')
@@ -48,21 +49,21 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
           res.status(400).json({error})
         }
       });
-    AbrammusPuppet(req.body.nome, req.processo_id)
-    FonogramaPuppet(req.body.nome, req.processo_id)
+      Puppet(req.body, req.processo_id)
+    // AbrammusPuppet(req.body.nome, req.processo_id)
+    // FonogramaPuppet(req.body.nome, req.processo_id)
     res.status(200).json({msg:"ok"})
 })
 routes.get('/updateObras', ProcessoController.findObras, (req,res)=>{
   let allProcessos = req.result
-  UpdatePuppet(allProcessos)
-  console.log("Done")
-  res.status(200).json({msg:"Updating..."})
+  // console.log(allProcessos[0])
+  UpdatePuppet(allProcessos[0])
+  res.status(200).json({msg:allProcessos.length})
 })
 
 routes.get('/updateFonogramas', ProcessoController.findFonogramas, (req,res)=>{
   let allProcessos = req.result
   UpdateFonograma(allProcessos)
-  console.log("Done")
   res.status(200).json({msg:allProcessos.length})
 })
 

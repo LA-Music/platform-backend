@@ -39,10 +39,10 @@ module.exports = {
         const updated = await processo.save()
         console.log("Obras Updated")
     },
-    async updateStatus(processo_id){
+    async updateStatus(processo_id, status){
         console.log("Updating Status")
         const processo = await Processos.findById(processo_id)
-        processo.status = "Obras não Encontradas"
+        processo.status = status
         const updated = await processo.save()
         console.log("Status Updated")
     },
@@ -98,7 +98,9 @@ module.exports = {
                         status_fonograma:element.status_fonograma,
                         reviewed:element.reviewed,
                         fonogramas:element.fonogramas,
-                        createdAt:element.createdAt.toLocaleString()}
+                        createdAt:element.createdAt.toLocaleString(),
+                        cadastro_Abrammus: element.cadastro_Abrammus
+                    }
                 });
                 return res.json(result)
             }
@@ -158,12 +160,16 @@ module.exports = {
         })
     },
     async checkProcesso(req, res){
-        console.log("Updating Status Fonogramas")
-        const {processo_id, check_value} = req.body
-        console.log(`${processo_id} --> ${check_value}`)
+        const {processo_id, check_value} = req.body    
         const processo = await Processos.findById(processo_id)
         processo.reviewed = check_value
         const updated = await processo.save()
         return res.status(200).json({processo})
+    },
+    async updateCadastroAbrammus(processo_id, value){    
+        const processo = await Processos.findById(processo_id)
+        processo.cadastro_Abrammus = value
+        const updated = await processo.save()
+        console.log("Status Updated")
     },
 };
