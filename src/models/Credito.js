@@ -27,6 +27,7 @@ const CreditoSchema = new Schema({
     nome_produtor:String,
     // email_produtor:String,
     telefone_produtor:String,
+    id_perfil:Schema.Types.ObjectId,
     status: Number
 },{timestamps:true});
 CreditoSchema.plugin(mongoosePaginate)

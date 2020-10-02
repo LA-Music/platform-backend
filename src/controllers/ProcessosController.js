@@ -5,6 +5,7 @@ module.exports = {
     async store(req, res, next){
         const { tipo, nome, email, cpf, obras, comments} = req.body
         const id_req = req.credito_id
+        const id_perfil = req.id_perfil
         const processosExists = await Processos.findOne({
                 $and:[{id_req},{nome}]
             })
@@ -19,7 +20,8 @@ module.exports = {
                     cpf,
                     id_req,
                     obras,
-                    comments
+                    comments,
+                    id_perfil
                 })
                 req.processo_id = processo._id
                 return next()
@@ -66,6 +68,16 @@ module.exports = {
     async find(req, res){
         const {chave, valor} = req.params;
         Processos.find({[chave]:valor}, (err, result)=>{
+            if(err || !result.length){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                return res.json(result)
+            }
+        })
+    },
+    async findProcesso(req, res){
+        const {profile_id:id_perfil} = req.decoded;
+        Processos.find({id_perfil}, (err, result)=>{
             if(err || !result.length){
                 return res.status(400).json({message: "Bad Request"});                
             }else{

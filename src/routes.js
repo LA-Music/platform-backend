@@ -76,6 +76,7 @@ routes.post('/autentificar', PerfilController.createToken)
 
 // Read Routes
 routes.get('/perfil', AuthMiddleware.checkToken, PerfilController.find)
+routes.get('/credito-retido/', AuthMiddleware.checkToken, CreditoController.findCredito)
 routes.get('/credito-retido/:chave/:valor', AuthMiddleware.checkToken, CreditoController.find)
 routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findAll)
 
@@ -88,6 +89,7 @@ routes.get('/marca-list/:page', AuthMiddleware.checkToken, MarcaController.findA
 routes.get('/contato/:chave/:valor', AuthMiddleware.checkToken, ContatoController.find)
 routes.get('/contato-list/:page', AuthMiddleware.checkToken, ContatoController.findAll)
 
+routes.get('/processo/', AuthMiddleware.checkToken, ProcessoController.findProcesso)
 routes.get('/processo/:chave/:valor', AuthMiddleware.checkToken, ProcessoController.find)
 routes.get('/processo-list/:page', AuthMiddleware.checkToken, ProcessoController.findAll)
 

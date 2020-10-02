@@ -4,13 +4,12 @@ require('dotenv').config()
 module.exports = {
     
     async store(req, res, next){
-        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor } = req.body
+        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil } = req.body
         const status = 0
         const creditoExists = await Credito.findOne({
                 $and:[{nome_artistico},{status}]
             })
         if(creditoExists){
-            console.log(creditoExists)
             return res.status(500).json({message: "Nome artístico já cadastrado: "+nome_artistico})
         }else{
             try {
@@ -27,9 +26,11 @@ module.exports = {
                     papel,
                     nome_produtor,
                     email_produtor,
-                    telefone_produtor
+                    telefone_produtor,
+                    id_perfil
                 })
                 req.credito_id = credito._id
+                req.id_perfil = id_perfil
                 return next()
             } catch (error) {
                 return res.status(400).json({message: error.message})
@@ -39,6 +40,17 @@ module.exports = {
     async find(req, res){
         const {chave, valor} = req.params;
         Credito.find({[chave]:valor}, (err, result)=>{
+            if(err || !result.length){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                return res.json(result)
+            }
+        })
+    },
+    async findCredito(req, res){
+        const {profile_id:id_perfil} = req.decoded;
+        console.log(id_perfil)
+        Credito.find({id_perfil:id_perfil}, (err, result)=>{
             if(err || !result.length){
                 return res.status(400).json({message: "Bad Request"});                
             }else{

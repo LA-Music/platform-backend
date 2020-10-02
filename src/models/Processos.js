@@ -40,6 +40,7 @@ const ProcessosSchema = new Schema({
         type:Schema.Types.ObjectId,
         required:true
     },
+    id_perfil:Schema.Types.ObjectId,
     cpf_cliente:String,
     obras:[obraSchema],
     fonogramas:[obraSchema],
