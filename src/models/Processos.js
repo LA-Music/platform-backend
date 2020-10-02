@@ -18,12 +18,12 @@ const ProcessosSchema = new Schema({
     status:{
         type: String,
         required:true,
-        default:"Buscando Obras"
+        default:"---"
     },
     status_fonograma:{
         type: String,
         required:true,
-        default:"Buscando Fonogramas"
+        default:"---"
     },
     tipo:{
         type:String,

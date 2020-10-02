@@ -146,11 +146,13 @@ async function AbrammusPuppet(autor, processo_id) {
   // Verifica se o cpf esta presente nos resultados
   if(!value.includes(`CPF${autor.cpf}`)){
     console.log("CPF nao encontrado")
-    ProcessoController.updateCadastroAbrammus(processo_id,false)
+    await ProcessoController.updateCadastroAbrammus(processo_id,false)
     await browser.close();
     return 0
   }
-  ProcessoController.updateCadastroAbrammus(processo_id,true)  
+  await ProcessoController.updateStatus(processo_id, "Buscando Obras")
+
+  await ProcessoController.updateCadastroAbrammus(processo_id,true)  
   console.log("CPF encontrado")
   // Procura a linha de texto do cpf de interesse
   let cpfText = parceCPFandPseudonimos(value, autor.cpf)
@@ -174,10 +176,15 @@ async function AbrammusPuppet(autor, processo_id) {
     await page.waitForSelector("#form\\:j_idt151", {visible: true})
     let element = await page.$('#form\\:listasolr_data')
     let value = await page.evaluate(el => el.textContent, element)
-    parseAll(Obras, value)
-          
-    await page.screenshot({path: 'BuscaNome.png'});
+    parseAll(Obras, value)          
+    // await page.screenshot({path: 'BuscaNome.png'});
   } catch (error) {
+    try {
+      await page.waitForSelector(".alert.alert-warning.msg-warning", {visible:true})
+      await ProcessoController.updateStatus(processo_id, "Abrammus Atualizando")
+    } catch (error) {
+      console.log("Erro: Obras não encontradas")
+    }
     console.log("Erro: Obras não encontradas Nome")
   }
 
@@ -195,13 +202,14 @@ async function AbrammusPuppet(autor, processo_id) {
   
     try {
       await page.waitForSelector("#form\\:j_idt151", {visible: true})
-      await page.screenshot({path: `Busca-${iterator}.png`});
+      // await page.screenshot({path: `Busca-${iterator}.png`});
     
       let element = await page.$('#form\\:listasolr_data')
       let value = await page.evaluate(el => el.textContent, element)      
       parseAll(Obras, value)
           
     } catch (error) {
+      
       console.log("Erro: Obras não encontradas Pseudonimo")      
     }  
   }
@@ -215,10 +223,13 @@ async function AbrammusPuppet(autor, processo_id) {
       return acc;
     }
   }, []);
-  await ProcessoController.updateObras(filteredObras, processo_id)
+  if (filteredObras.length>0){
+    await ProcessoController.updateObras(filteredObras, processo_id)
+  }
     
   // Etapa 3 Buscar Fonogramas
   await page.goto('https://portal.abramus.org.br/portal/v/principal.faces');
+  await ProcessoController.updateStatusFonogramas(processo_id, "Buscando Fonogramas")
 
   await page.goto('https://portal.abramus.org.br/portal/v/naoIdentificado/identificarFonograma.faces');
   await page.click("#form\\:movieBtn1")
@@ -234,6 +245,12 @@ async function AbrammusPuppet(autor, processo_id) {
     parseAll(Fonogramas, valueFono)
 
   } catch (error) {
+    try {
+      await page.waitForSelector(".alert.alert-warning.msg-warning", {visible:true})
+      await ProcessoController.updateStatusFonogramas(processo_id, "Abrammus Atualizando")
+    } catch (error) {
+      console.log("Erro: Obras não encontradas")
+    }
     console.log("Erro: Fonograma não encontrado: "+autor.nome)
   }
 
@@ -270,7 +287,9 @@ async function AbrammusPuppet(autor, processo_id) {
       return acc;
     }
   }, []);
-  await ProcessoController.updateFonogramas(filteredFonogramas, processo_id)
+  if (filteredObras.length>0){
+    await ProcessoController.updateFonogramas(filteredFonogramas, processo_id)
+  }
   console.log("DONE")
   await browser.close();
   return 0
