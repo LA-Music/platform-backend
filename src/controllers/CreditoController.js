@@ -51,7 +51,7 @@ module.exports = {
         const {profile_id:id_perfil} = req.decoded;
         console.log(id_perfil)
         Credito.find({id_perfil:id_perfil}, (err, result)=>{
-            if(err || !result.length){
+            if(err){
                 return res.status(400).json({message: "Bad Request"});                
             }else{
                 return res.json(result)
