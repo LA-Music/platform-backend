@@ -14,7 +14,8 @@ const FonogramaPuppet = require('./services/FonogramaPuppet')
 const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
 const UpdateFonograma = require('./services/UpdateFonograma')
-const ProcessoController = require('./controllers/ProcessosController')
+const ProcessoController = require('./controllers/ProcessosController');
+const Perfil = require('./models/Perfil');
 routes.get('/',(req,res)=>{
     return res.status(200).json({message:`Server in On`})
 });
@@ -74,9 +75,13 @@ routes.post('/contato', ContatoController.store)
 routes.post('/checkProcesso', ProcessoController.checkProcesso)
 routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
+routes.post('/resetarSenha', PerfilController.recover)
+routes.post('/reset/:token', PerfilController.resetPassword)
 
 // Read Routes
 routes.get('/perfil', AuthMiddleware.checkToken, PerfilController.find)
+routes.get('/reset/:token', PerfilController.reset)
+
 routes.get('/credito-retido/', AuthMiddleware.checkToken, CreditoController.findCredito)
 routes.get('/credito-retido/:chave/:valor', AuthMiddleware.checkToken, CreditoController.find)
 routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findAll)

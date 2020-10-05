@@ -1,6 +1,7 @@
 const {Schema, model} = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 const bcrypt = require('bcrypt')
+const crypto = require('crypto');
 
 const PerfilSchema = new Schema({
     nome:{
@@ -31,6 +32,15 @@ const PerfilSchema = new Schema({
       default:"user",
       enum:["user", "admin", "superadmin"],
       required:true
+    },   
+    resetPasswordToken: {
+        type: String,
+        required: false
+    },
+
+    resetPasswordExpires: {
+        type: Date,
+        required: false
     }
 },{timestamps:true});
 
@@ -54,8 +64,10 @@ PerfilSchema.statics.authenticate = function (email, senha, callback) {
     });
 }
 
-PerfilSchema.pre('save', function (next) {
+PerfilSchema.pre('save', function (next) {  
   var perfil = this;
+  if (!perfil.isModified('senha')) return next();
+  console.log("Trocar SENHA:"+perfil.senha)
   bcrypt.hash(perfil.senha, 10, function (err, hash){
     if (err) {
       return next(err);
@@ -64,6 +76,11 @@ PerfilSchema.pre('save', function (next) {
     next();
   })
 });
+
+PerfilSchema.methods.generatePasswordReset = function() {
+  this.resetPasswordToken = crypto.randomBytes(20).toString('hex');
+  this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
+};
 
 PerfilSchema.plugin(mongoosePaginate)
 var Perfil = model('Perfil', PerfilSchema);
