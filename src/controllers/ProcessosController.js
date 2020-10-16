@@ -78,7 +78,7 @@ module.exports = {
     async findProcesso(req, res){
         const {profile_id:id_perfil} = req.decoded;
         Processos.find({id_perfil}, (err, result)=>{
-            if(err || !result.length){
+            if(err){
                 return res.status(400).json({message: "Bad Request"});                
             }else{
                 return res.json(result)

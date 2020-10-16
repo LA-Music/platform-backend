@@ -84,7 +84,8 @@ routes.get('/reset/:token', PerfilController.reset)
 
 routes.get('/credito-retido/', AuthMiddleware.checkToken, CreditoController.findCredito)
 routes.get('/credito-retido/:chave/:valor', AuthMiddleware.checkToken, CreditoController.find)
-routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findAll)
+routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findPaginate)
+routes.get('/credito-retido-list/', CreditoController.timeline)
 
 routes.get('/musica/:chave/:valor', AuthMiddleware.checkToken, MusicaController.find)
 routes.get('/musica-list/:page', AuthMiddleware.checkToken, MusicaController.findAll)

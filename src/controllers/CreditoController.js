@@ -1,5 +1,14 @@
 const Credito = require('../models/Credito');
+const moment = require('moment');
+
 require('dotenv').config()
+
+function parseTimeline(xs, key){
+    return xs.reduce(function(rv, x) {                
+        (rv[x[key]] = (rv[x[key]] || 0)+1);
+    return rv;
+    }, {});
+}
 
 module.exports = {
     
@@ -58,7 +67,7 @@ module.exports = {
             }
         })
     },
-    async findAll(req, res){
+    async findPaginate(req, res){
         const { page } = req.params
         const options = {
             page,
@@ -79,6 +88,25 @@ module.exports = {
                 });
                 
                 return res.json(result)
+            }
+        })
+    },
+    async timeline(req, res){
+        
+        const options = {            
+            sort: { createdAt: 1},
+            limit:500
+        }
+
+        await Credito.paginate({}, options, (err, result)=>{
+            if(err){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                result.docs = result.docs.map(element => {
+                    return {_id:element._id, nome:element.nome, createdAt:moment(element.createdAt).format('YYYY-MM-DD')}
+                });                
+                // console.log(parseTimeline(result.docs,"createdAt"))
+                return res.json(parseTimeline(result.docs,"createdAt"))
             }
         })
     }
