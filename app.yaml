@@ -2,5 +2,5 @@
 runtime: nodejs12
 
 env_variables:
-  ENV: "teste variavel"
+  ENV: "Production"
 # [END gae_quickstart_yaml]
