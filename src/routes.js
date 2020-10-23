@@ -19,7 +19,7 @@ const ProcessoController = require('./controllers/ProcessosController');
 const Perfil = require('./models/Perfil');
 
 routes.get('/',(req,res)=>{
-    return res.status(200).json({message:`Server in On ${process.env.ENV}`})
+    return res.status(200).json({message:`Server in On -- ${process.env.ENV}`})
 });
 
 // Create Routes
