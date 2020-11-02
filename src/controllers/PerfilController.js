@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     async store(req, res){
-        const { nome, email, senha, cpf, telefone, termos, newsletter} = req.body
+        const { nome, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
         const papel = "user"
         const usuarioExists = await Perfil.findOne({
@@ -24,7 +24,8 @@ module.exports = {
                     cpf,
                     telefone,
                     termos,
-                    newsletter
+                    newsletter,
+                    nome_empresa
                 })
                 return res.status(200).json({message: "ok"})
             } catch (error) {
