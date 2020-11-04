@@ -72,7 +72,7 @@ module.exports = {
         const options = {
             page,
             sort: { createdAt: -1},
-            limit: process.env.PAGINATION_LIMIT
+            limit: 500
         }
 
         await Credito.paginate({}, options, (err, result)=>{
