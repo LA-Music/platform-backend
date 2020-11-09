@@ -70,8 +70,9 @@ async function FonogramaPuppet(autor, processo_id) {
   
     await page.goto('https://portal.abramus.org.br/portal');
   
-    await page.type("#username", 'luiz@lamusic.com.br')
-    await page.type("#password", 'VanGogh7671')
+    
+    await page.type("#username", process.env.ABRAMMUS_EMAIL)
+    await page.type("#password", process.env.ABRAMMUS_SENHA)
     
     await Promise.all([
       page.waitForNavigation(),

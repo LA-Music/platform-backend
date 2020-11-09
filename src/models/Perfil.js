@@ -31,7 +31,7 @@ const PerfilSchema = new Schema({
     papel:{
       type:String,
       default:"user",
-      enum:["user", "admin", "superadmin"],
+      enum:["user", "admin", "superadmin", "pro"],
       required:true
     },   
     resetPasswordToken: {

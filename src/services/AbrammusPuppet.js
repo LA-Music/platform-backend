@@ -1,3 +1,4 @@
+require('dotenv').config()
 const puppeteer = require('puppeteer');
 const ProcessoController = require('../controllers/ProcessosController')
 
@@ -41,6 +42,11 @@ function parseExecucao(obras){
   return arrStr
 }
 
+function parseExecucao1(obras){
+  let arrStr = obras.match(/(?<=Execuções)(.*?)(?=\s*Solicitar)/g);
+  return arrStr
+}
+
 async function AbrammusPuppet(autor, processo_id) {
   const Obras = []
   console.log("Scraping Obras... Autor: "+autor)
@@ -59,8 +65,8 @@ async function AbrammusPuppet(autor, processo_id) {
 
   await page.goto('https://portal.abramus.org.br/portal');
 
-  await page.type("#username", 'luiz@lamusic.com.br')
-  await page.type("#password", 'VanGogh7671')
+  await page.type("#username", process.env.ABRAMMUS_EMAIL)
+  await page.type("#password", process.env.ABRAMMUS_SENHA)
   
   await Promise.all([
     page.waitForNavigation(),
@@ -96,7 +102,7 @@ async function AbrammusPuppet(autor, processo_id) {
   for (let index = 0; index < codEcad.length; index++) {
     Obras.push({codEcad:codEcad[index], titulo:titulo[index],interprete: interprete[index], 
       competencia: competencia[index],faixa: faixa[index], motivo: motivo[index], 
-      execucao: execucao[index], autores: autores[index]})
+      execucao:(execucao ? execucao[index] : parseExecucao1(value)[index]), autores: autores[index]})
   }
 
   // console.log("Scraped Obras... "+JSON.stringify(Obras))
