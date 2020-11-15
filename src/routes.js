@@ -98,7 +98,8 @@ routes.get('/marca-list/:page', AuthMiddleware.checkToken, MarcaController.findA
 routes.get('/contato/:chave/:valor', AuthMiddleware.checkToken, ContatoController.find)
 routes.get('/contato-list/:page', AuthMiddleware.checkToken, ContatoController.findAll)
 
-routes.get('/processo/', AuthMiddleware.checkToken, ProcessoController.findProcesso)
+// TODO -- Verificar se nao quebra nada...
+routes.get('/processo/', AuthMiddleware.checkToken, PerfilController.getEmailByToken, ProcessoController.findProcesso)
 routes.get('/processo/:chave/:valor', AuthMiddleware.checkToken, ProcessoController.find)
 routes.get('/processo-list/:page', AuthMiddleware.checkToken, ProcessoController.findAll)
 

@@ -50,6 +50,14 @@ module.exports = {
             }
         })
     },
+    async getEmailByToken(req, res, next){
+        const {profile_id} = req.decoded;
+        Perfil.findById(profile_id, function (err, result) {
+            req.email = result.email
+            return next()                   
+        })
+    }
+    ,
     async createToken(req, res){
         const {email, senha} = req.body
         Perfil.authenticate(email, senha, function (error, perfil) {
