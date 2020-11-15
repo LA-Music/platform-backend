@@ -6,30 +6,34 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     async store(req, res){
-        const { nome, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
+        const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
-        const papel = "user"
+        
         const usuarioExists = await Perfil.findOne({
                 $and:[{email}]
             })
         if(usuarioExists){
             return res.status(500).json({message: "Email não disponível"})
         }else{
-            try {
-                await Perfil.create({
-                    nome,
-                    email,
-                    senha,
-                    papel,
-                    cpf,
-                    telefone,
-                    termos,
-                    newsletter,
-                    nome_empresa
-                })
-                return res.status(200).json({message: "ok"})
-            } catch (error) {
-                return res.status(400).json({message: error.message})
+            if(papel != "admin"){
+                try {
+                    await Perfil.create({
+                        nome,
+                        email,
+                        senha,
+                        papel,
+                        cpf,
+                        telefone,
+                        termos,
+                        newsletter,
+                        nome_empresa
+                    })
+                    return res.status(200).json({message: "ok"})
+                } catch (error) {
+                    return res.status(400).json({message: error.message})
+                }
+            }else{
+                return res.status(400).json({message: "Papel nao disponivel"})
             }
         }
     },
