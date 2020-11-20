@@ -3,20 +3,25 @@ require('dotenv').config()
 
 const routes = express.Router();
 var nodemailer = require('nodemailer');
-
+const axios = require('axios')
 const CreditoController = require('./controllers/CreditoController')
 const MusicaController = require('./controllers/MusicaController')
 const MarcaController = require('./controllers/MarcaController')
 const ContatoController = require('./controllers/ContatoController')
 const AuthMiddleware = require('./middlewares/Authmiddleware')
 const PerfilController = require('./controllers/PerfilController')
-const AbrammusPuppet = require('./services/AbrammusPuppet')
-const FonogramaPuppet = require('./services/FonogramaPuppet')
 const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
 const UpdateFonograma = require('./services/UpdateFonograma')
 const ProcessoController = require('./controllers/ProcessosController');
 const Perfil = require('./models/Perfil');
+
+routes.post('/proxy',async (req,res)=>{  
+  const url = "https://gpt2-compositor-eroai6oftq-ue.a.run.app/"
+  const { data } = await axios.post(url, req.body)
+
+  return res.json({text:data.text})
+})
 
 routes.get('/',(req,res)=>{
     return res.status(200).json({message:`Server in On -- ${process.env.ENV}`})
@@ -53,8 +58,6 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
         }
       });
       Puppet(req.body, req.processo_id)
-    // AbrammusPuppet(req.body.nome, req.processo_id)
-    // FonogramaPuppet(req.body.nome, req.processo_id)
     res.status(200).json({msg:"ok"})
 })
 
