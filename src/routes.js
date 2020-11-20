@@ -18,8 +18,10 @@ const Perfil = require('./models/Perfil');
 
 routes.post('/proxy',async (req,res)=>{  
   const url = "https://gpt2-compositor-eroai6oftq-ue.a.run.app/"
-  const { data } = await axios.post(url, req.body)
 
+  const { data } = await axios.post(url, {length: parseInt(req.body.length), temperature: (parseInt(req.body.temperature)/100), prefix: req.body.prefix})
+  console.log(req.body)
+  console.log(data.text)
   return res.json({text:data.text})
 })
 
