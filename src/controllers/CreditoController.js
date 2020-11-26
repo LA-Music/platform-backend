@@ -57,9 +57,8 @@ module.exports = {
         })
     },
     async findCredito(req, res){
-        const {profile_id:id_perfil} = req.decoded;
-        console.log(id_perfil)
-        Credito.find({id_perfil:id_perfil}, (err, result)=>{
+        const email = req.email        
+        Credito.find({email}, (err, result)=>{
             if(err){
                 return res.status(400).json({message: "Bad Request"});                
             }else{

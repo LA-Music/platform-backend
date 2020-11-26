@@ -28,6 +28,7 @@ const PerfilSchema = new Schema({
     termos:Boolean,
     newsletter:Boolean,
     nome_empresa:String,
+    contrato_pro:Boolean,
     papel:{
       type:String,
       default:"user",

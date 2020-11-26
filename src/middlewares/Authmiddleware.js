@@ -1,6 +1,7 @@
 require('dotenv').config();
 let jwt = require('jsonwebtoken');
 const config = process.env.JWT_SECRET
+const Perfil = require('../models/Perfil');
 
 let checkToken = (req, res, next) => {
   let token = req.headers['x-access-token'] || req.headers['authorization'];
@@ -27,7 +28,21 @@ let checkToken = (req, res, next) => {
   }
 };
 
+async function checkPro(req, res, next) {
+  const {profile_id} = req.decoded;
+  const {papel} = await Perfil.findById(profile_id).exec();
+
+  if (papel === "pro") {
+    return next()
+  }
+  return res.json({
+      success: false,
+      message: 'Token not Authorized'
+    });
+}
 
 module.exports = {
-  checkToken: checkToken
+  checkToken: checkToken,
+  checkPro: checkPro
+
 }

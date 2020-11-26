@@ -164,5 +164,40 @@ module.exports = {
                     });
                 });
             });
+    },
+    async contratarPro(req,res,next){    
+        const {profile_id} = req.decoded;
+        const perfil = await Perfil.findById(profile_id)
+        perfil.contrato_pro = true
+        const updated = await perfil.save()
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.REMETENTE_EMAIL,
+              pass: process.env.REMETENTE_SENHA
+            }
+          });
+        // send email
+        const mailOptions = {
+            to: 'matheus@lamusic.com.br',
+            from: process.env.FROM_EMAIL,
+            subject: "Contratar LA Pro",
+            text: `Olá admin \n 
+            O usuário: ${perfil.nome} (cpf: ${perfil.cpf}), quer contratar o LA Pro!\n
+            \n
+            Favor entrar em contato pelo email: ${perfil.email}.
+
+            att, Sistema LA Music.
+            `
+        };                        
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              res.status(500).json({error})
+            }
+            res.status(200).json({message: 'Pedido registrado'})
+        });
+
     }
 };
