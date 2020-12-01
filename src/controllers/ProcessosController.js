@@ -4,7 +4,9 @@ require('dotenv').config()
 module.exports = {
     async store(req, res, next){
         const { tipo, nome, email, cpf, obras, comments} = req.body
-        console.log("BODY"+req.body)
+        console.log("BODY:"+JSON.stringify(req.body))
+        console.log("NOME:"+req.nome)
+        console.log("REQ ID:"+req.credito_id)
         const id_req = req.credito_id
         const id_perfil = req.id_perfil
         const processosExists = await Processos.findOne({
@@ -28,7 +30,7 @@ module.exports = {
                 return next()
 
             } catch (error) {
-                return res.status(400).json({message: error.message})
+                return res.status(400).json({processomessage: error.message})
             }
         }
     },
