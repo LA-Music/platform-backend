@@ -40,6 +40,9 @@ module.exports = {
                 })
                 req.credito_id = credito._id
                 req.id_perfil = id_perfil
+                console.log("Req id:"+req.credito_id)
+                console.log("Perfil id:"+req.id_perfil)
+
                 return next()
             } catch (error) {
                 return res.status(400).json({message: error.message})

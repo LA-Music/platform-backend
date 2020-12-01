@@ -4,6 +4,7 @@ require('dotenv').config()
 module.exports = {
     async store(req, res, next){
         const { tipo, nome, email, cpf, obras, comments} = req.body
+        console.log("BODY"+req.body)
         const id_req = req.credito_id
         const id_perfil = req.id_perfil
         const processosExists = await Processos.findOne({
