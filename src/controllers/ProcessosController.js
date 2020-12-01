@@ -3,19 +3,25 @@ require('dotenv').config()
 
 module.exports = {
     async store(req, res, next){
-        const { tipo, nome, email, cpf, obras, comments} = req.body
-        console.log("BODY:"+JSON.stringify(req.body))
-        const id_req = req.credito_id
-        const id_perfil = req.id_perfil
-        console.log("REQ ID:"+id_req)
-        console.log("NOME:"+nome)
-        const processosExists = await Processos.findOne({
-                $and:[{id_req},{nome}]
-            })
-        if(processosExists){
-            return res.status(500).json({message: "Requisição Existente"})
-        }else{
+        // const { tipo, nome, email, cpf, obras, comments} = req.body
+        // console.log("BODY:"+JSON.stringify(req.body))
+        // const id_req = req.credito_id
+        // const id_perfil = req.id_perfil
+        // console.log("REQ ID:"+id_req)
+        // console.log("NOME:"+nome)
+        // const processosExists = await Processos.findOne({
+        //         $and:[{id_req},{nome}]
+        //     })
+        // if(processosExists){
+        //     return res.status(500).json({message: "Requisição Existente"})
+        // }else{
             try {
+                 const { tipo, nome, email, cpf, obras, comments} = req.body
+                 console.log("BODY:"+JSON.stringify(req.body))
+                 const id_req = req.credito_id
+                 const id_perfil = req.id_perfil
+                 console.log("REQ ID:"+id_req)
+                 console.log("NOME:"+nome)
                 const processo = await Processos.create({
                     tipo,
                     nome,
@@ -32,7 +38,7 @@ module.exports = {
             } catch (error) {
                 return res.status(400).json({processomessage: error.message})
             }
-        }
+        // }
     },
     async updateObras(obrasColetadas, processo_id){
         console.log("Updating Obras")
