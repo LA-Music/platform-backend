@@ -60,7 +60,8 @@ routes.post('/credito-retido', CreditoController.store, ProcessoController.store
         }
       });
       Puppet(req.body, req.processo_id)
-    res.status(200).json({msg:"ok"})
+      
+      res.status(200).json({msg:"ok"})
 })
 
 routes.get('/updateObras', ProcessoController.findObras, (req,res)=>{
