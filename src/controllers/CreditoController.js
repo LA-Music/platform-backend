@@ -39,9 +39,7 @@ module.exports = {
                     id_perfil
                 })
                 req.credito_id = credito._id
-                req.id_perfil = id_perfil
-                console.log("Req id:"+req.credito_id)
-                console.log("Perfil id:"+req.id_perfil)
+                req.id_perfil = id_perfil                
 
                 return next()
             } catch (error) {

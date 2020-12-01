@@ -33,12 +33,12 @@ const ProcessosSchema = new Schema({
     },
     nome:{
        type:String,
-       required: true
+    //    required: true
     },
     email:String,
     id_req:{
         type:Schema.Types.ObjectId,
-        required:true
+        // required:true
     },
     id_perfil:Schema.Types.ObjectId,
     cpf_cliente:String,

@@ -5,10 +5,10 @@ module.exports = {
     async store(req, res, next){
         const { tipo, nome, email, cpf, obras, comments} = req.body
         console.log("BODY:"+JSON.stringify(req.body))
-        console.log("NOME:"+req.nome)
-        console.log("REQ ID:"+req.credito_id)
         const id_req = req.credito_id
         const id_perfil = req.id_perfil
+        console.log("REQ ID:"+id_req)
+        console.log("NOME:"+nome)
         const processosExists = await Processos.findOne({
                 $and:[{id_req},{nome}]
             })
