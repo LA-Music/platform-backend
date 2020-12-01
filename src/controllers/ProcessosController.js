@@ -22,15 +22,14 @@ module.exports = {
                  const id_perfil = req.id_perfil
                  console.log("REQ ID:"+id_req)
                  console.log("NOME:"+nome)
-                const processo = await Processos.create({
-                    tipo,
-                    nome,
-                    email,
-                    cpf,
-                    id_req,
-                    obras,
-                    comments,
-                    id_perfil
+                const processo = await Processos.create({                    
+                    nome:nome,
+                    email:email,
+                    cpf:cpf,
+                    id_req:id_req,
+                    // obras,
+                    // comments,
+                    id_perfil:id_perfil
                 })
                 req.processo_id = processo._id
                 return next()
