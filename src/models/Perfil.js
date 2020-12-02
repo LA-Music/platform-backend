@@ -2,7 +2,10 @@ const {Schema, model} = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 const bcrypt = require('bcrypt')
 const crypto = require('crypto');
-
+var artistaContrato = new Schema({
+  nome:String,
+  cpf:String
+})
 const PerfilSchema = new Schema({
     nome:{
         type: String,
@@ -34,12 +37,12 @@ const PerfilSchema = new Schema({
       default:"user",
       enum:["user", "admin", "superadmin", "pro"],
       required:true
-    },   
+    },  
+    artistas:[artistaContrato], 
     resetPasswordToken: {
         type: String,
         required: false
     },
-
     resetPasswordExpires: {
         type: Date,
         required: false

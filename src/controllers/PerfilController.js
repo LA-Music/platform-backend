@@ -166,11 +166,13 @@ module.exports = {
             });
     },
     async contratarPro(req,res,next){    
+        const { nome, cpf} =req.body
         const {profile_id} = req.decoded;
         const perfil = await Perfil.findById(profile_id)
-        perfil.contrato_pro = true
+        // perfil.contrato_pro = true
+        perfil.artistas.push({nome,cpf})
         const updated = await perfil.save()
-
+        console.log(JSON.stringify(updated))
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -184,8 +186,12 @@ module.exports = {
             from: process.env.FROM_EMAIL,
             subject: "Contratar LA Pro",
             text: `Olá admin \n 
-            O usuário: ${perfil.nome} (cpf: ${perfil.cpf}), quer contratar o LA Pro!\n
+            O usuário: ${perfil.nome} (cpf: ${perfil.cpf}), quer contratar o LA Pro!
             \n
+            Nome do artista: ${nome}
+            \n
+            Cpf do artista: ${cpf}
+            \n\n
             Favor entrar em contato pelo email: ${perfil.email}.
 
             att, Sistema LA Music.

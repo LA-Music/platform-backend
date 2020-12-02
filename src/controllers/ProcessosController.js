@@ -16,7 +16,7 @@ module.exports = {
         //     return res.status(500).json({message: "Requisição Existente"})
         // }else{
             try {
-                 const { tipo, nome, email, cpf, obras, comments} = req.body
+                 const { tipo, nome, email, cpf} = req.body
                  console.log("BODY:"+JSON.stringify(req.body))
                  const id_req = req.credito_id
                  const id_perfil = req.id_perfil
@@ -27,8 +27,6 @@ module.exports = {
                     email:email,
                     cpf:cpf,
                     id_req:id_req,
-                    // obras,
-                    // comments,
                     id_perfil:id_perfil
                 })
                 req.processo_id = processo._id
