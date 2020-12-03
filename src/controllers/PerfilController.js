@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     async store(req, res){
-        const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
+        const { nome, papel, email, senha, cpf, telefone, termos, newsletter} = req.body
         const status = 0
         
         const usuarioExists = await Perfil.findOne({
@@ -18,15 +18,14 @@ module.exports = {
             if(papel != "admin"){
                 try {
                     await Perfil.create({
-                        nome,
-                        email,
-                        senha,
-                        papel,
-                        cpf,
-                        telefone,
-                        termos,
-                        newsletter,
-                        nome_empresa
+                        nome:nome,
+                        email:email,
+                        senha:senha,
+                        papel:papel,
+                        cpf:cpf,
+                        telefone:telefone,
+                        termos:termos,
+                        newsletter:newsletter                        
                     })
                     if(papel === "pro"){
                         var transporter = nodemailer.createTransport({

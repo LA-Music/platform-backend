@@ -9,7 +9,7 @@ module.exports = {
                 $and:[{nome},{tipo},{status}]
             })
         if(contatoExists){
-            return res.status(500).json({message: "Requisição Existente"})
+            return res.status(500).json({message: "Contato Repetido"})
         }else{
             try {
                 await Contato.create({
