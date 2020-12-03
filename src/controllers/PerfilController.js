@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
     async store(req, res){
-        const { nome, papel, email, senha, cpf, telefone, termos, newsletter} = req.body
+        const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
         
         const usuarioExists = await Perfil.findOne({
@@ -25,7 +25,8 @@ module.exports = {
                         cpf:cpf,
                         telefone:telefone,
                         termos:termos,
-                        newsletter:newsletter                        
+                        newsletter:newsletter,
+                        nome_empresa:nome_empresa                                                
                     })
                     if(papel === "pro"){
                         var transporter = nodemailer.createTransport({
@@ -208,7 +209,7 @@ module.exports = {
             from: process.env.FROM_EMAIL,
             subject: "Contratar LA Pro",
             text: `Olá admin \n 
-            O usuário: ${perfil.nome} (cpf: ${perfil.cpf}), quer contratar o LA Pro!
+            O usuário: ${perfil.nome}, quer contratar o LA Pro!
             \n
             Nome do artista: ${nome}
             \n
