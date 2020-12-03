@@ -72,7 +72,6 @@ PerfilSchema.statics.authenticate = function (email, senha, callback) {
 PerfilSchema.pre('save', function (next) {  
   var perfil = this;
   if (!perfil.isModified('senha')) return next();
-  console.log("Trocar SENHA:"+perfil.senha)
   bcrypt.hash(perfil.senha, 10, function (err, hash){
     if (err) {
       return next(err);

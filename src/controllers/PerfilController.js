@@ -22,7 +22,7 @@ module.exports = {
                         email:email,
                         senha:senha,
                         papel:papel,
-                        cpf:cpf,
+                        cpf:papel==="pro"?0:cpf,
                         telefone:telefone,
                         termos:termos,
                         newsletter:newsletter,
