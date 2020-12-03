@@ -63,7 +63,9 @@ function parsePseudonimos(obras){
   return arrStr[0]
 }
 
-function parceCPFandPseudonimos(obras, cpf){
+function parseCPFandPseudonimos(obras, cpf){
+  // remove pontuacao
+  cpf = cpf.replace(/\D/g,'');
   let searchString = "(?<=CPF"+cpf+")(.*)"
   var regex = new RegExp( searchString, 'g' );
   let arrStr = obras.match(regex);
@@ -155,7 +157,7 @@ async function AbrammusPuppet(autor, processo_id) {
   await ProcessoController.updateCadastroAbrammus(processo_id,true)  
   console.log("CPF encontrado")
   // Procura a linha de texto do cpf de interesse
-  let cpfText = parceCPFandPseudonimos(value, autor.cpf)
+  let cpfText = parseCPFandPseudonimos(value, autor.cpf)
   // Recupera os pseudonimos da linha do cpf
   const pseudonimos = parsePseudonimos(cpfText)
   console.log(`CPF: ${autor.cpf}`)

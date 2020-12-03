@@ -28,6 +28,29 @@ module.exports = {
                         newsletter,
                         nome_empresa
                     })
+                    if(papel === "pro"){
+                        var transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                              user: process.env.REMETENTE_EMAIL,
+                              pass: process.env.REMETENTE_SENHA
+                            }
+                          });
+                        // send email
+                        const mailOptions = {
+                            to: email,
+                            from: process.env.FROM_EMAIL,
+                            subject: "Sua conta foi criada com sucesso",
+                            text: `Olá ${nome} \n 
+                            Bem vindo ao LA Pro!.\n`
+                        };                        
+        
+                        transporter.sendMail(mailOptions, function(error, info){
+                            if (error) {
+                              return res.status(500).json({error})
+                            }                            
+                        });
+                    }                    
                     return res.status(200).json({message: "ok"})
                 } catch (error) {
                     return res.status(400).json({message: error.message})
