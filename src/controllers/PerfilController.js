@@ -204,7 +204,7 @@ module.exports = {
           });
         // send email
         const mailOptions = {
-            to: 'matheus@lamusic.com.br',
+            to: ['matheus@lamusic.com.br','michelle@lamusic.com.br'],
             from: process.env.FROM_EMAIL,
             subject: "Contratar LA Pro",
             text: `Olá admin \n 
