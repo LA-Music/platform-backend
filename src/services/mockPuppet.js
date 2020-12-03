@@ -63,7 +63,7 @@ function parsePseudonimos(obras){
   return arrStr[0]
 }
 
-function parseCPFandPseudonimos(obras, cpf){    
+function parseCPFandPseudonimos(obras, cpf){
   let searchString = "(?<=CPF"+cpf+")(.*)"
   var regex = new RegExp( searchString, 'g' );
   let arrStr = obras.match(regex);
@@ -142,7 +142,7 @@ async function AbrammusPuppet(autor, processo_id) {
   // Coleta a tabela de resultados
   let element = await page.$('#consultarTitularFrm\\:j_idt148_data')
   let value = await page.evaluate(el => el.textContent, element)
-
+  
   // Verifica se o cpf esta presente nos resultados
   const cpf = autor.cpf.replace(/\D/g,'');
   if(!value.includes(`CPF${cpf}`)){
@@ -296,4 +296,22 @@ async function AbrammusPuppet(autor, processo_id) {
   return 0
 }
 
-module.exports = AbrammusPuppet
+async function mock(){ 
+    const processo_id = "5fc8d9a389e34100177d7c05"
+    const credito = {
+        "nome": "Nívea Soares",
+        "email":"pro5@lamusic.com.br",
+        "cpf":"031.778.196-02",
+        "telefone":"124124124125",
+        "nome_artistico":"Nivea Soares",
+        "associacao":"Abrammus",
+        "redes_sociais":["rede1","rede2"],
+        "lista_musicas":["link1","link2","link3"]
+    }   
+    await AbrammusPuppet( credito, processo_id)
+    
+    console.log("\n Done Mocking Puppet")
+    console.log("+++++++++++++++++++++++++++++")
+}
+mock()
+// module.exports = mock
