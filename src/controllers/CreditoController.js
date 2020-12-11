@@ -83,7 +83,7 @@ module.exports = {
                     return {_id:element._id,nome:element.nome,email:element.email,
                         cpf:element.cpf,telefone:element.telefone,nome_artistico:element.nome_artistico,
                         associacao:element.associacao,status:element.status,createdAt:element.createdAt.toLocaleString(),
-                        nome_produtor:element.nome_produtor, telefone_produtor:element.telefone_produtor
+                        nome_produtor:element.nome_produtor, telefone_produtor:element.telefone_produtor, redes_sociais: element.redes_sociais, lista_musicas: element.lista_musicas
                     }
                 });
                 
@@ -95,7 +95,7 @@ module.exports = {
         
         const options = {            
             sort: { createdAt: 1},
-            limit:500
+            limit:600
         }
 
         await Credito.paginate({}, options, (err, result)=>{

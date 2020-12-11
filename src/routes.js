@@ -112,6 +112,7 @@ routes.get('/processo-list/:page', AuthMiddleware.checkToken, ProcessoController
 
 // Update Routes
 routes.post('/obras', ProcessoController.updateObras)
+routes.post('/perfil/', AuthMiddleware.checkToken, PerfilController.updateInfo)
 
 // Delete Routes
 
