@@ -109,5 +109,12 @@ module.exports = {
                 return res.json(parseTimeline(result.docs,"createdAt"))
             }
         })
-    }
+    },
+    async findById(req, res, next){
+        const { id_req } = req.result
+        const result = await Credito.findById(id_req)
+        
+        req.credito = result
+        return next()
+    },
 };

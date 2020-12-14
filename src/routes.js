@@ -111,9 +111,21 @@ routes.get('/processo/:chave/:valor', AuthMiddleware.checkToken, ProcessoControl
 routes.get('/processo-list/:page', AuthMiddleware.checkToken, ProcessoController.findAll)
 
 // Update Routes
-routes.post('/obras', ProcessoController.updateObras)
+routes.post('/obras/', ProcessoController.updateObras)
 routes.post('/perfil/', AuthMiddleware.checkToken, PerfilController.updateInfo)
 
+routes.post('/updatePuppet/', AuthMiddleware.checkToken, ProcessoController.findProcessoById, CreditoController.findById, async (req, res)=>{
+  const { processo_id } = req.body
+  try{
+    await Puppet(req.credito,processo_id)
+    return res.status(200).json({message:"Ok"})
+  }catch (error){
+    console.log("errou!")
+    return res.status(500).json({message:error})
+  }
+  
+  
+})
 // Delete Routes
 
 module.exports = routes;

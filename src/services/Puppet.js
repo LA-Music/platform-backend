@@ -137,13 +137,21 @@ async function AbrammusPuppet(autor, processo_id) {
   await page.waitForSelector("#consultarTitularFrm\\:edtSearch", {visible: true})
   await page.type("#consultarTitularFrm\\:edtSearch", autor.nome)
   await page.click("#consultarTitularFrm\\:btnBuscar")
-  await page.waitForSelector("#consultarTitularFrm\\:j_idt148\\:0\\:conteudoFicha",{visible:true})
+  try {
+    await page.waitForSelector("#consultarTitularFrm\\:j_idt148\\:0\\:conteudoFicha",{visible:true})
+  } catch (error) {
+    console.log("CPF nao encontrado")
+    await ProcessoController.updateCadastroAbrammus(processo_id,false)
+    await browser.close();
+    return 0
+  }
   
   // Coleta a tabela de resultados
   let element = await page.$('#consultarTitularFrm\\:j_idt148_data')
   let value = await page.evaluate(el => el.textContent, element)
 
   // Verifica se o cpf esta presente nos resultados
+  console.log(value)
   const cpf = autor.cpf.replace(/\D/g,'');
   if(!value.includes(`CPF${cpf}`)){
     console.log("CPF nao encontrado")
@@ -268,7 +276,7 @@ async function AbrammusPuppet(autor, processo_id) {
   
     try {
       await page.waitForSelector("#form\\:j_idt151", {visible: true})
-      await page.screenshot({path: `Busca-${iterator}.png`});
+      // await page.screenshot({path: `Busca-${iterator}.png`});
     
       let element = await page.$('#form\\:listasolr_data')
       let value = await page.evaluate(el => el.textContent, element)      

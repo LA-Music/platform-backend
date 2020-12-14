@@ -4,11 +4,8 @@ require('dotenv').config()
 module.exports = {
     async store(req, res, next){
         // const { tipo, nome, email, cpf, obras, comments} = req.body
-        // console.log("BODY:"+JSON.stringify(req.body))
         // const id_req = req.credito_id
         // const id_perfil = req.id_perfil
-        // console.log("REQ ID:"+id_req)
-        // console.log("NOME:"+nome)
         // const processosExists = await Processos.findOne({
         //         $and:[{id_req},{nome}]
         //     })
@@ -17,11 +14,11 @@ module.exports = {
         // }else{
             try {
                  const { tipo, nome, email, cpf} = req.body
-                 console.log("BODY:"+JSON.stringify(req.body))
+                //  console.log("BODY:"+JSON.stringify(req.body))
                  const id_req = req.credito_id
                  const id_perfil = req.id_perfil
-                 console.log("REQ ID:"+id_req)
-                 console.log("NOME:"+nome)
+                //  console.log("REQ ID:"+id_req)
+                //  console.log("NOME:"+nome)
                 const processo = await Processos.create({                    
                     nome:nome,
                     email:email,
@@ -38,38 +35,38 @@ module.exports = {
         // }
     },
     async updateObras(obrasColetadas, processo_id){
-        console.log("Updating Obras")
+        // console.log("Updating Obras")
         const processo = await Processos.findById(processo_id)
         obrasColetadas.forEach(element => {
             processo.obras.push(element)
         });
         processo.status = "Obras Encontradas"
         const updated = await processo.save()
-        console.log("Obras Updated")
+        // console.log("Obras Updated")
     },
     async updateStatus(processo_id, status){
-        console.log("Updating Status")
+        // console.log("Updating Status")
         const processo = await Processos.findById(processo_id)
         processo.status = status
         const updated = await processo.save()
-        console.log("Status Updated")
+        // console.log("Status Updated")
     },
     async updateFonogramas(fonogramasColetados, processo_id){
-        console.log("Atualizando Fonogramas: "+processo_id)
+        // console.log("Atualizando Fonogramas: "+processo_id)
         const processo = await Processos.findById(processo_id)
         fonogramasColetados.forEach(element => {
             processo.fonogramas.push(element)
         });
         processo.status_fonograma = "Fonogramas Encontrados"
         const updated = await processo.save()
-        console.log("Fonogramas Atualizados")
+        // console.log("Fonogramas Atualizados")
     },
     async updateStatusFonogramas(processo_id, status){
-        console.log("Updating Status Fonogramas")
+        // console.log("Updating Status Fonogramas")
         const processo = await Processos.findById(processo_id)
         processo.status_fonograma = status
         const updated = await processo.save()
-        console.log("Status Updated")
+        // console.log("Status Updated")
     },
     async find(req, res){
         const {chave, valor} = req.params;
@@ -188,6 +185,12 @@ module.exports = {
         const processo = await Processos.findById(processo_id)
         processo.cadastro_Abrammus = value
         const updated = await processo.save()
-        console.log("Status Updated")
+        // console.log("Status Updated")
     },
+    async findProcessoById(req, res, next){
+        const { processo_id } = req.body
+        const result = await Processos.findById(processo_id)
+        req.result = result
+        return next()
+    }
 };
