@@ -125,7 +125,7 @@ module.exports = {
                     const mailOptions = {
                         to: user.email,
                         from: process.env.REMETENTE_EMAIL,
-                        subject: "Password change request",
+                        subject: "Requisição de Troca de Senhas",
                         text: `Olá ${user.nome} \n 
                     Por favor clique no link a seguir ${link} para resetar a sua senha. \n\n 
                     Se você não requisitou a recuperação, ignore esse email.\n`,
@@ -175,7 +175,7 @@ module.exports = {
                         to: user.email,
                         from: process.env.FROM_EMAIL,
                         subject: "Sua senha foi alterada",
-                        text: `Olá ${user.username} \n 
+                        text: `Olá ${user.nome} \n 
                         A senha do email: ${user.email} foi alterada com sucesso!.\n`
                     };                        
     

@@ -15,19 +15,19 @@ module.exports = {
     async store(req, res, next){
         const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil } = req.body
         const status = 0
-        const creditoExists = await Credito.findOne({
-                $and:[{nome_artistico},{status}]
-            })
-        if(creditoExists){
-            return res.status(500).json({message: "Nome artístico já cadastrado: "+nome_artistico})
-        }else{
+        // const creditoExists = await Credito.findOne({
+                // $and:[{nome_artistico},{status}]
+            // })
+        // if(creditoExists){
+        //     return res.status(500).json({message: "Nome artístico já cadastrado: "+nome_artistico})
+        // }else{
             try {
                 const credito = await Credito.create({
                     nome,
                     email,
                     cpf,
                     telefone,
-                    nome_artistico,
+                    pseudonimos:nome_artistico,
                     associacao,
                     redes_sociais,
                     lista_musicas,
@@ -45,7 +45,7 @@ module.exports = {
             } catch (error) {
                 return res.status(400).json({creditomessage: error.message})
             }
-        }
+        // }
     },    
     async find(req, res){
         const {chave, valor} = req.params;

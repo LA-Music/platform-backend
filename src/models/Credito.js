@@ -18,6 +18,7 @@ const CreditoSchema = new Schema({
     associacao:String,
     redes_sociais:[String],
     lista_musicas:[String],
+    pseudonimos:[String],
     papel:{
         type:String,
         default:"artista",
