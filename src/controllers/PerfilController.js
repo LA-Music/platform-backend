@@ -112,7 +112,7 @@ module.exports = {
             user.save()
                 .then(user => {
                     // send email
-                    let link = "http://" + req.headers.host + "/reset/" + user.resetPasswordToken;
+                    let link = "http://app.lamusic.com.br/pro/reset/" + user.resetPasswordToken;
 
                     var transporter = nodemailer.createTransport({
                         service: 'gmail',
