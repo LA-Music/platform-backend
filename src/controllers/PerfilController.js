@@ -69,7 +69,7 @@ module.exports = {
             }else{
                 // Todo refactorar para findById
                 const resultado = result[0]
-                return res.json({id:resultado._id, papel:resultado.papel, email: resultado.email, nome: resultado.nome, cpf: resultado.cpf, nome_empresa: resultado.nome_empresa})
+                return res.json({id:resultado._id, papel:resultado.papel, email: resultado.email, nome: resultado.nome, telefone: resultado.telefone, nome_empresa: resultado.nome_empresa})
             }
         })
     },
@@ -231,9 +231,9 @@ module.exports = {
     },
     async updateInfo(req, res){
         const {profile_id} = req.decoded;
-        const {nome, email, cpf, nome_empresa} = req.body
+        const {nome, email, telefone, nome_empresa} = req.body
         const perfil = await Perfil.findByIdAndUpdate(profile_id,{
-        nome, email, cpf, nome_empresa
+        nome, email, telefone, nome_empresa
         }, function(err, result) {
           if (err) {
             return res.status(400).json({err});
