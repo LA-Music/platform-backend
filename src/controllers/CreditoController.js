@@ -1,5 +1,7 @@
 const Credito = require('../models/Credito');
 const moment = require('moment');
+var nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars')
 
 require('dotenv').config()
 
@@ -41,7 +43,45 @@ module.exports = {
                 req.credito_id = credito._id
                 req.id_perfil = id_perfil                
 
-                return next()
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                      user: process.env.REMETENTE_EMAIL,
+                      pass: process.env.REMETENTE_SENHA
+                    }
+                  });
+                  // send email
+                transporter.use('compile', hbs({
+                    viewEngine: {
+                        extName: '.hbs',
+                        partialsDir: 'views',//your path, views is a folder inside the source folder
+                        layoutsDir: 'views',
+                        defaultLayout: ''//set this one empty and provide your template below,
+                      },
+                    viewPath: 'views'
+                }))
+                const mailOptions = {
+                    to: email,
+                    from: process.env.FROM_EMAIL,
+                    subject: "Relatório solicitado com sucesso!",
+                    template: 'consulta',
+                    context: {
+                        titulo: "RELATÓRIO SOLICITADO COM SUCESSO",
+                        nome,
+                        cpf,
+                        telefone,
+                        associacao,
+                        nome_produtor
+                    },
+                };                        
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                      return res.status(500).json({error})
+                    }      
+                    // return res.status(200).json({message:"Testando"})
+
+                    return next()
+                });
             } catch (error) {
                 return res.status(400).json({creditomessage: error.message})
             }

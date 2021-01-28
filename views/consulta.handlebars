@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>LA Music</title>
+
+    <style>
+        #cafe{
+            width: 650px;
+            margin: 0 auto;
+            border: 1px solid #d6d6d6;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
+        span{
+            vertical-align: middle;
+        }
+        #cabecalho{
+
+            /*display: flex;*/
+            padding: 1em;
+            align-items: center; /* Vertical center alignment */
+            justify-content: center; /* Horizontal center alignment */
+            
+        }
+        #titulo{
+            background-color: black;
+            color: white;
+            padding: 1em;
+
+            /*display: flex;*/
+            align-items: center; /* Vertical center alignment */
+            justify-content: center; /* Horizontal center alignment */
+        }
+        #corpo{
+            /* height: 200px; */
+            padding: 1em;
+            /* display: flex; */
+            align-items: center; /* Vertical center alignment */
+            justify-content: center; /* Horizontal center alignment */
+        }
+        #footer{
+            border-top:1px solid #d6d6d6 ;
+            height: auto;
+            padding: 2em;
+            background-color: #f7f7f7;
+        }
+        #logo{
+            height: 65px;
+        }
+        #footer li{
+            display: inline;
+            margin: 5px;
+        }
+        #footer ul{
+            text-align: center;
+        }
+        li{
+            /* list-style: none; */
+            margin: 1em;
+        }
+        ul{
+            text-align: left;
+        }
+        div span{
+            color: #767676;
+            display: inline-block;
+            margin: 1em;
+        }
+        button{
+            background-color: black;
+            border-radius: 25px;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="cafe">
+        <div id="cabecalho"> <img id="logo" src="http://www.lamusic.com.br/wp-content/themes/la_music/assets/img/matheus-logo-la.jpeg"></img></div>
+        <div id="titulo"><h3>{{titulo}}</h3></div>
+        <div id="corpo">
+            <h3>Salve, {{nome_produtor}}</h3>
+            </br>    
+            
+            </br>
+            <div>
+                <ul>
+                    <h3>Você acabou de solicitar a consulta de créditos retidos no ECAD para o artista:</h3> 
+                    <li><b>Nome do Artista: </b>{{nome}}</li>
+                    <li><b>Cpf: </b>{{cpf}}</li>
+                    <li><b>Telefone: </b>{{telefone}}</li>
+                    <li><b>Associacao: </b>{{associacao}}</li>
+                </ul>
+            </br>
+            </br>
+            </br>
+                <p>O levantamento será feito junto às Associações de Músicos que fazem parte do sistema Ecad e vamos verificar se existem Créditos de Direito Autoral
+                    (composições) e Conexos (interpretação) vinculados ao nome/CPF do artista {{nome}} pendentes de liberação.</p> 
+                <p>Em até 2 (dois) dias úteis, você receberá um e-mail com o resultado desta pesquisa e com a situação das músicas que detalhou na sua consulta.</p>
+            </div>
+        </div>
+        <div id="footer">
+            <h3>Aproveite e conheça um pouco mais sobre a LA</h3>
+            <a href="https://www.lamusic.com.br/"><button>Conhecer LA</button></a>
+            <ul>
+                <li><a href="https://www.facebook.com/LAMusicMM"><img src="http://www.lamusic.com.br/wp-content/themes/la_music/assets/img/matheus-facebook.jpeg"></a></img></li>
+                <li><a href="https://www.youtube.com/channel/UCoqJN6OvfXpwfcTEHebIK7w"><img src="http://www.lamusic.com.br/wp-content/themes/la_music/assets/img/matheus-play.jpeg"></img></a></li>
+                <li><a href="https://www.instagram.com/lamusicmm/"><img src="http://www.lamusic.com.br/wp-content/themes/la_music/assets/img/matheus-instagram.jpeg"></img></a></li>
+                <li><a href="https://www.linkedin.com/company/lamusic/"><img src="http://www.lamusic.com.br/wp-content/themes/la_music/assets/img/matheus-linkedin.jpeg"></img></a></li>
+            </ul>
+            <div>
+                <span>Atendimento de segunda à sexta das 09:00 às 18:00</span>
+                <span>E qualquer dúvida, fique à vontade para responder esse e-mail ou nos contatar por qualquer dos nossos canais de atendimento.</span>
+                <span>LA Music</span>
+            </div>
+        </div>
+    </div> 
+    
+</body>
+</html>

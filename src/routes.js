@@ -81,7 +81,9 @@ routes.post('/musica', MusicaController.store)
 routes.post('/marca', MarcaController.store)
 routes.post('/contato', ContatoController.store)
 routes.post('/checkProcesso', ProcessoController.checkProcesso)
+// TDD
 routes.post('/registrar', PerfilController.store)
+
 routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)

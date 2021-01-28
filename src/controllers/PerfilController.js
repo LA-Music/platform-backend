@@ -1,6 +1,6 @@
 require('dotenv').config()
 var nodemailer = require('nodemailer');
-
+const hbs = require('nodemailer-express-handlebars')
 const Perfil = require('../models/Perfil')
 const jwt = require('jsonwebtoken')
 
@@ -8,7 +8,10 @@ module.exports = {
     async store(req, res){
         const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
-        
+        // Ao invés de gmail
+        //Sendgrid
+        // Mailgun
+        // const usuarioExists = false
         const usuarioExists = await Perfil.findOne({
                 $and:[{email}]
             })
@@ -36,15 +39,27 @@ module.exports = {
                               pass: process.env.REMETENTE_SENHA
                             }
                           });
-                        // send email
+                          // send email
+                        transporter.use('compile', hbs({
+                            viewEngine: {
+                                extName: '.hbs',
+                                partialsDir: 'views',//your path, views is a folder inside the source folder
+                                layoutsDir: 'views',
+                                defaultLayout: ''//set this one empty and provide your template below,
+                              },
+                            viewPath: 'views'
+                        }))
                         const mailOptions = {
                             to: email,
                             from: process.env.FROM_EMAIL,
-                            subject: "Sua conta foi criada com sucesso",
-                            text: `Olá ${nome} \n 
-                            Bem vindo ao LA Pro!.\n`
+                            subject: "Sua conta foi criada com sucesso!",
+                            template: 'index',
+                            context: {
+                                titulo: "CONFIRMAÇÃO DE CADASTRO",
+                                nome: nome,
+                                editora: nome_empresa
+                            },
                         };                        
-        
                         transporter.sendMail(mailOptions, function(error, info){
                             if (error) {
                               return res.status(500).json({error})
@@ -112,7 +127,7 @@ module.exports = {
             user.save()
                 .then(user => {
                     // send email
-                    let link = "http://app.lamusic.com.br/pro/reset#" + user.resetPasswordToken;
+                    let link = "https://app.lamusic.com.br/pro/reset#" + user.resetPasswordToken;
 
                     var transporter = nodemailer.createTransport({
                         service: 'gmail',
@@ -121,19 +136,30 @@ module.exports = {
                           pass: process.env.REMETENTE_SENHA
                         }
                       });
-
+                      // send email
+                      transporter.use('compile', hbs({
+                        viewEngine: {
+                            extName: '.hbs',
+                            partialsDir: 'views',//your path, views is a folder inside the source folder
+                            layoutsDir: 'views',
+                            defaultLayout: ''//set this one empty and provide your template below,
+                          },
+                        viewPath: 'views'
+                    }))
                     const mailOptions = {
                         to: user.email,
                         from: process.env.REMETENTE_EMAIL,
-                        subject: "Requisição de Troca de Senhas",
-                        text: `Olá ${user.nome} \n 
-                    Por favor clique no link a seguir ${link} para resetar a sua senha. \n\n 
-                    Se você não requisitou a recuperação, ignore esse email.\n`,
-                    };
-                    
+                        subject: "Pedido de trocar senha",
+                        template: 'linkTrocaSenha',
+                        context: {
+                            titulo: "PEDIDO DE TRICA DE SENHA",
+                            nome: user.nome,
+                            link: link
+                        },
+                    };                        
                     transporter.sendMail(mailOptions, function(error, info){
                         if (error) {
-                          res.status(500).json({error})
+                          return res.status(500).json({error})
                         }
                         res.status(200).json({message: 'Email de alteração de senha foi enviado para: ' + user.email + '.'});
                     });
@@ -170,15 +196,26 @@ module.exports = {
                           pass: process.env.REMETENTE_SENHA
                         }
                       });
-                    // send email
+
+                     transporter.use('compile', hbs({
+                        viewEngine: {
+                            extName: '.hbs',
+                            partialsDir: 'views',//your path, views is a folder inside the source folder
+                            layoutsDir: 'views',
+                            defaultLayout: ''//set this one empty and provide your template below,
+                          },
+                        viewPath: 'views'
+                    }))
                     const mailOptions = {
                         to: user.email,
-                        from: process.env.FROM_EMAIL,
+                        from: process.env.REMETENTE_EMAIL,
                         subject: "Sua senha foi alterada",
-                        text: `Olá ${user.nome} \n 
-                        A senha do email: ${user.email} foi alterada com sucesso!.\n`
-                    };                        
-    
+                        template: 'confirmacaoSenha',
+                        context: {
+                            titulo: "SENHA ALTERADA",
+                            nome: user.nome,
+                        },
+                    };        
                     transporter.sendMail(mailOptions, function(error, info){
                         if (error) {
                           res.status(500).json({error})
