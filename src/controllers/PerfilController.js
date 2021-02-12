@@ -149,10 +149,10 @@ module.exports = {
                     const mailOptions = {
                         to: user.email,
                         from: process.env.REMETENTE_EMAIL,
-                        subject: "Pedido de trocar senha",
+                        subject: "Pedido de troca de senha",
                         template: 'linkTrocaSenha',
                         context: {
-                            titulo: "PEDIDO DE TRICA DE SENHA",
+                            titulo: "PEDIDO DE TROCA DE SENHA",
                             nome: user.nome,
                             link: link
                         },
