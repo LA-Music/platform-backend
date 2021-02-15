@@ -19,24 +19,24 @@ module.exports = {
         const status = 0
 
             try {
-                // const credito = await Credito.create({
-                //     nome,
-                //     email,
-                //     cpf,
-                //     telefone,
-                //     pseudonimos:nome_artistico,
-                //     associacao,
-                //     redes_sociais,
-                //     lista_musicas,
-                //     status,
-                //     papel,
-                //     nome_produtor,
-                //     email_produtor,
-                //     telefone_produtor,
-                //     id_perfil
-                // })
-                // req.credito_id = credito._id
-                // req.id_perfil = id_perfil                
+                const credito = await Credito.create({
+                    nome,
+                    email,
+                    cpf,
+                    telefone,
+                    pseudonimos:nome_artistico,
+                    associacao,
+                    redes_sociais,
+                    lista_musicas,
+                    status,
+                    papel,
+                    nome_produtor,
+                    email_produtor,
+                    telefone_produtor,
+                    id_perfil
+                })
+                req.credito_id = credito._id
+                req.id_perfil = id_perfil                
 
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -56,8 +56,8 @@ module.exports = {
                     viewPath: 'views'
                 }))
                 const mailOptions = {
-                    // to: email_produtor,
-                    to:'matheuscmilo@gmail.com',
+                    to: email_produtor,
+                    // to:'matheuscmilo@gmail.com',
                     from: process.env.FROM_EMAIL,
                     subject: "Relatório solicitado com sucesso!",
                     template: 'consulta',
