@@ -87,7 +87,7 @@ routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)
-routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarPro)
+routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
 
 // Read Routes
 routes.get('/perfil', AuthMiddleware.checkToken, AuthMiddleware.checkPro, PerfilController.find)

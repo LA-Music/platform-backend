@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 const crypto = require('crypto');
 var artistaContrato = new Schema({
   nome:String,
-  cpf:String
+  cpf:String,
+  contratado:Boolean
 })
 const PerfilSchema = new Schema({
     nome:{

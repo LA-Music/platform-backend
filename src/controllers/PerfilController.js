@@ -51,6 +51,7 @@ module.exports = {
                         }))
                         const mailOptions = {
                             to: email,
+                            // to:'matheuscmilo@gmail.com',
                             from: process.env.FROM_EMAIL,
                             subject: "Sua conta foi criada com sucesso!",
                             template: 'index',
@@ -94,8 +95,7 @@ module.exports = {
             req.email = result.email
             return next()                   
         })
-    }
-    ,
+    },
     async createToken(req, res){
         const {email, senha} = req.body
         Perfil.authenticate(email, senha, function (error, perfil) {
@@ -225,14 +225,13 @@ module.exports = {
                 });
             });
     },
-    async contratarPro(req,res,next){    
+    async contratarProSistema(req,res,next){    
         const { nome, cpf} =req.body
         const {profile_id} = req.decoded;
         const perfil = await Perfil.findById(profile_id)
-        // perfil.contrato_pro = true
-        perfil.artistas.push({nome,cpf})
+        perfil.artistas.push({nome,cpf,contratado:false})
+
         const updated = await perfil.save()
-        console.log(JSON.stringify(updated))
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -242,17 +241,21 @@ module.exports = {
           });
         // send email
         const mailOptions = {
-            to: ['matheus@lamusic.com.br','michelle@lamusic.com.br'],
+            to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br'],
+            // to: ['matheuscmilo@gmail.com'],
             from: process.env.FROM_EMAIL,
             subject: "Contratar LA Pro",
             text: `Olá admin \n 
-            O usuário: ${perfil.nome}, quer contratar o LA Pro!
+            O usuário: ${perfil.nome}, da editora: ${perfil.nome_empresa}, cpf: ${perfil.cpf} quer contratar o LA Pro!
+            
+            Favor entrar em contato pelo email: ${perfil.email} ou telefone: ${perfil.telefone}
+            
+            \n
             \n
             Nome do artista: ${nome}
             \n
             Cpf do artista: ${cpf}
             \n\n
-            Favor entrar em contato pelo email: ${perfil.email}.
 
             att, Sistema LA Music.
             `
@@ -262,8 +265,49 @@ module.exports = {
             if (error) {
               res.status(500).json({error})
             }
+            req.email = perfil.email
+            return next()                   
             res.status(200).json({message: 'Pedido registrado'})
         });
+
+    },
+    async contratarProCliente(req,res){
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.REMETENTE_EMAIL,
+              pass: process.env.REMETENTE_SENHA
+            }
+        });
+        
+        transporter.use('compile', hbs({
+            viewEngine: {
+                extName: '.hbs',
+                partialsDir: 'views',//your path, views is a folder inside the source folder
+                layoutsDir: 'views',
+                defaultLayout: ''//set this one empty and provide your template below,
+              },
+            viewPath: 'views'
+        }))
+
+        const mailOptions = {
+            to: req.email,
+            // to:"matheuscmilo@gmail.com",
+            from: process.env.FROM_EMAIL,
+            subject: "Contratar LA Pro para artista",
+            template: 'contratar',
+            context: {
+                titulo: "CONTRATAR LA PRO PARA ARTISTA"
+            },
+        };   
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              return res.status(500).json({error})
+            }                            
+        });
+
+        res.status(200).json({message: 'OK'});
 
     },
     async updateInfo(req, res){

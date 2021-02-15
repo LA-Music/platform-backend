@@ -17,31 +17,26 @@ module.exports = {
     async store(req, res, next){
         const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil } = req.body
         const status = 0
-        // const creditoExists = await Credito.findOne({
-                // $and:[{nome_artistico},{status}]
-            // })
-        // if(creditoExists){
-        //     return res.status(500).json({message: "Nome artístico já cadastrado: "+nome_artistico})
-        // }else{
+
             try {
-                const credito = await Credito.create({
-                    nome,
-                    email,
-                    cpf,
-                    telefone,
-                    pseudonimos:nome_artistico,
-                    associacao,
-                    redes_sociais,
-                    lista_musicas,
-                    status,
-                    papel,
-                    nome_produtor,
-                    email_produtor,
-                    telefone_produtor,
-                    id_perfil
-                })
-                req.credito_id = credito._id
-                req.id_perfil = id_perfil                
+                // const credito = await Credito.create({
+                //     nome,
+                //     email,
+                //     cpf,
+                //     telefone,
+                //     pseudonimos:nome_artistico,
+                //     associacao,
+                //     redes_sociais,
+                //     lista_musicas,
+                //     status,
+                //     papel,
+                //     nome_produtor,
+                //     email_produtor,
+                //     telefone_produtor,
+                //     id_perfil
+                // })
+                // req.credito_id = credito._id
+                // req.id_perfil = id_perfil                
 
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -61,7 +56,8 @@ module.exports = {
                     viewPath: 'views'
                 }))
                 const mailOptions = {
-                    to: email,
+                    // to: email_produtor,
+                    to:'matheuscmilo@gmail.com',
                     from: process.env.FROM_EMAIL,
                     subject: "Relatório solicitado com sucesso!",
                     template: 'consulta',
@@ -78,14 +74,13 @@ module.exports = {
                     if (error) {
                       return res.status(500).json({error})
                     }      
-                    // return res.status(200).json({message:"Testando"})
-
+                     res.status(200).json({message: 'OK'});
+                    
                     return next()
                 });
             } catch (error) {
                 return res.status(400).json({creditomessage: error.message})
             }
-        // }
     },    
     async find(req, res){
         const {chave, valor} = req.params;
