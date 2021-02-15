@@ -56,7 +56,7 @@ module.exports = {
                     viewPath: 'views'
                 }))
                 const mailOptions = {
-                    to: email_produtor,
+                    to: email,
                     // to:'matheuscmilo@gmail.com',
                     from: process.env.FROM_EMAIL,
                     subject: "Relatório solicitado com sucesso!",

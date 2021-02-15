@@ -9,7 +9,7 @@ module.exports = {
         const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
         // Ao invés de gmail
-        //Sendgrid
+        // Sendgrid
         // Mailgun
         // const usuarioExists = false
         const usuarioExists = await Perfil.findOne({
@@ -63,7 +63,7 @@ module.exports = {
                         };                        
                         transporter.sendMail(mailOptions, function(error, info){
                             if (error) {
-                              return res.status(500).json({error})
+                              return res.status(400).json({message: error})
                             }                            
                         });
                     }                    
