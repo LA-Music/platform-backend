@@ -1,4 +1,5 @@
 const Credito = require('../models/Credito');
+const Lead = require('../models/Lead');
 const moment = require('moment');
 var nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars')
@@ -15,37 +16,43 @@ function parseTimeline(xs, key){
 module.exports = {
     
     async store(req, res, next){
-        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil } = req.body
+        const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil,lead_id } = req.body
         const status = 0
-
             try {
-                const credito = await Credito.create({
-                    nome,
-                    email,
-                    cpf,
-                    telefone,
-                    pseudonimos:nome_artistico,
-                    associacao,
-                    redes_sociais,
-                    lista_musicas,
-                    status,
-                    papel,
-                    nome_produtor,
-                    email_produtor,
-                    telefone_produtor,
-                    id_perfil
-                })
-                req.credito_id = credito._id
+                // const credito = await Credito.create({
+                //     nome,
+                //     email,
+                //     cpf,
+                //     telefone,
+                //     pseudonimos:nome_artistico,
+                //     associacao,
+                //     redes_sociais,
+                //     lista_musicas,
+                //     status,
+                //     papel,
+                //     nome_produtor,
+                //     email_produtor,
+                //     telefone_produtor,
+                //     id_perfil
+                // })
+                // req.credito_id = credito._id
                 req.id_perfil = id_perfil                
+                const lead = await Lead.findById(lead_id)
+                lead.completou = true
+                const updated = await lead.save()
 
-                var transporter = nodemailer.createTransport({
-                    service: 'gmail',
+                let transporter = nodemailer.createTransport({
+                    host: 'smtp.gmail.com',
+                    port: 587,
+                    secure: false,
+                    requireTLS: true,
                     auth: {
-                      user: process.env.REMETENTE_EMAIL,
-                      pass: process.env.REMETENTE_SENHA
+                        user: process.env.REMETENTE_EMAIL,
+                        pass: process.env.REMETENTE_SENHA
                     }
-                  });
-                  // send email
+                });
+                
+                // send email
                 transporter.use('compile', hbs({
                     viewEngine: {
                         extName: '.hbs',
@@ -56,9 +63,9 @@ module.exports = {
                     viewPath: 'views'
                 }))
                 const mailOptions = {
-                    to: email,
                     // to:'matheuscmilo@gmail.com',
-                    from: process.env.FROM_EMAIL,
+                    to: email,
+                    from: process.env.REMETENTE_EMAIL,
                     subject: "Relatório solicitado com sucesso!",
                     template: 'consulta',
                     context: {
@@ -74,10 +81,25 @@ module.exports = {
                     if (error) {
                       return res.status(500).json({error})
                     }      
-                     res.status(200).json({message: 'OK'});
+                    // return res.status(200).json({message: 'OK'});
                     
                     return next()
                 });
+            } catch (error) {
+                return res.status(400).json({creditomessage: error.message})
+            }
+    },
+    async storeLead(req, res, next){
+        const { nome,email,cpf,telefone} = req.body
+            try {
+                const lead = await Lead.create({
+                    nome,
+                    email,
+                    cpf,
+                    telefone,
+                    completou:false,
+                })   
+                res.status(200).json({lead_id:lead._id});
             } catch (error) {
                 return res.status(400).json({creditomessage: error.message})
             }

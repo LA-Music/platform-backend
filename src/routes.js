@@ -77,6 +77,8 @@ routes.get('/updateFonogramas', ProcessoController.findFonogramas, (req,res)=>{
   res.status(200).json({msg:allProcessos.length})
 })
 
+routes.post('/lead', CreditoController.storeLead)
+
 routes.post('/musica', MusicaController.store)
 routes.post('/marca', MarcaController.store)
 routes.post('/contato', ContatoController.store)
@@ -125,7 +127,6 @@ routes.post('/updatePuppet/', AuthMiddleware.checkToken, ProcessoController.find
     console.log("errou!")
     return res.status(500).json({message:error})
   }
-  
   
 })
 // Delete Routes

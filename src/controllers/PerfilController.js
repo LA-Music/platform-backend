@@ -91,6 +91,7 @@ module.exports = {
     },
     async getEmailByToken(req, res, next){
         const {profile_id} = req.decoded;
+        // todo try catch
         Perfil.findById(profile_id, function (err, result) {
             req.email = result.email
             return next()                   
@@ -307,7 +308,7 @@ module.exports = {
             }                            
         });
 
-        res.status(200).json({message: 'OK'});
+        res.status(200).json({message: 'ok'});
 
     },
     async updateInfo(req, res){

@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 
-const CreditoSchema = new Schema({
+const LeadSchema = new Schema({
     nome:{
         type: String,
         required: true,
@@ -14,21 +14,7 @@ const CreditoSchema = new Schema({
         type: String
     },
     telefone:String,
-    nome_artistico:String,
-    associacao:String,
-    redes_sociais:[String],
-    lista_musicas:[String],
-    papel:{
-        type:String,
-        default:"artista",
-        enum:["artista", "produtor"],
-        required:true
-    },
-    nome_produtor:String,
-    // email_produtor:String,
-    telefone_produtor:String,
-    id_perfil:Schema.Types.ObjectId,
-    status: Number
+    completou:Boolean,
 },{timestamps:true});
-CreditoSchema.plugin(mongoosePaginate)
-module.exports = model('Credito', CreditoSchema);
+LeadSchema.plugin(mongoosePaginate)
+module.exports = model('Lead', LeadSchema);
