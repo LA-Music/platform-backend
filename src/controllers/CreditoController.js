@@ -82,11 +82,37 @@ module.exports = {
                       return res.status(500).json({error})
                     }      
                     // return res.status(200).json({message: 'OK'});
-                    
+                    const assunto = "Credito Retido"
+                    const mensagem = `<h1>Novo Credito Retido</h1> <ul><li><b>Id:</b>${req.credito_id}</li><li><b>Nome:</b>${req.body.nome}</li><li><b>Email:</b>${req.body.email}</li><li><b>Cpf:</b>${req.body.cpf}</li><li><b>Telefone:</b>${req.body.telefone}</li><li><b>Nome Artístico:</b>${req.body.nome_artistico}</li><li><b>Associação:</b>${req.body.associacao}</li></ul>`
+                    var maillist = [
+                        'luiz@lamusic.com.br',
+                        'rangel@lamusic.com.br',
+                        'matheus@lamusic.com.br'
+                    ];  
+                    // var transporter = nodemailer.createTransport({
+                    //     service: 'gmail',
+                    //     auth: {
+                    //     user: process.env.REMETENTE_EMAIL ,
+                    //     pass: process.env.REMETENTE_SENHA
+                    //     }
+                    // });
+
+                    var mailOptions = {
+                        from: process.env.REMETENTE_EMAIL,
+                        to: maillist,
+                        subject: assunto,
+                        html: mensagem
+                    };
+
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                        res.status(400).json({error})
+                        }
+                    });
                     return next()
                 });
             } catch (error) {
-                return res.status(400).json({creditomessage: error.message})
+                return res.status(400).json({message: error.message})
             }
     },
     async storeLead(req, res, next){
@@ -102,7 +128,7 @@ module.exports = {
                 })   
                 res.status(200).json({lead_id:lead._id});
             } catch (error) {
-                return res.status(400).json({creditomessage: error.message})
+                return res.status(400).json({message: error.message})
             }
     },    
     async find(req, res){
