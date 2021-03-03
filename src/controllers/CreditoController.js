@@ -19,23 +19,23 @@ module.exports = {
         const { nome,email,cpf,telefone,nome_artistico,associacao,redes_sociais,lista_musicas,papel,nome_produtor,email_produtor,telefone_produtor,id_perfil,lead_id } = req.body
         const status = 0
             try {
-                // const credito = await Credito.create({
-                //     nome,
-                //     email,
-                //     cpf,
-                //     telefone,
-                //     pseudonimos:nome_artistico,
-                //     associacao,
-                //     redes_sociais,
-                //     lista_musicas,
-                //     status,
-                //     papel,
-                //     nome_produtor,
-                //     email_produtor,
-                //     telefone_produtor,
-                //     id_perfil
-                // })
-                // req.credito_id = credito._id
+                const credito = await Credito.create({
+                    nome,
+                    email,
+                    cpf,
+                    telefone,
+                    pseudonimos:nome_artistico,
+                    associacao,
+                    redes_sociais,
+                    lista_musicas,
+                    status,
+                    papel,
+                    nome_produtor,
+                    email_produtor,
+                    telefone_produtor,
+                    id_perfil
+                })
+                req.credito_id = credito._id
                 req.id_perfil = id_perfil                
                 const lead = await Lead.findById(lead_id)
                 lead.completou = true
@@ -90,13 +90,14 @@ module.exports = {
             }
     },
     async storeLead(req, res, next){
-        const { nome,email,cpf,telefone} = req.body
+        const { nome,email,cpf,telefone,nome_produtor} = req.body
             try {
                 const lead = await Lead.create({
                     nome,
                     email,
                     cpf,
                     telefone,
+                    nome_produtor,
                     completou:false,
                 })   
                 res.status(200).json({lead_id:lead._id});

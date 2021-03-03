@@ -2,10 +2,7 @@ const {Schema, model} = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate-v2');
 
 const LeadSchema = new Schema({
-    nome:{
-        type: String,
-        required: true,
-    },
+    nome:String,
     email:{
         type: String,
         required: true,
@@ -13,6 +10,7 @@ const LeadSchema = new Schema({
     cpf:{
         type: String
     },
+    nome_produtor:String,
     telefone:String,
     completou:Boolean,
 },{timestamps:true});
