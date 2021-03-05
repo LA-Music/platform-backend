@@ -171,7 +171,7 @@ module.exports = {
     async timeline(req, res){
         
         const options = {            
-            sort: { createdAt: 1},
+            sort: { createdAt: -1},
             limit:600
         }
 
