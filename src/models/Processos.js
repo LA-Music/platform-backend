@@ -8,7 +8,12 @@ var obraSchema = new Schema({
     competencia:String,
     faixa:String,
     motivo:String,
-    execucao:String
+    execucao:String,
+    status:{
+        type:String,
+        default:"ativado",
+        enum:["ativado","desativado","removido"]
+    }
 })
 var commentSchema = new Schema({
     msg:String,

@@ -64,6 +64,8 @@ routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)
 routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
+routes.post('/autoria/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria)
+
 
 // Read Routes
 routes.get('/perfil', AuthMiddleware.checkToken, AuthMiddleware.checkPro, PerfilController.find)
@@ -87,7 +89,6 @@ routes.get('/contato-list/:page', AuthMiddleware.checkToken, ContatoController.f
 routes.get('/processo/', AuthMiddleware.checkToken, PerfilController.getEmailByToken, ProcessoController.findProcesso)
 routes.get('/processo/:chave/:valor', AuthMiddleware.checkToken, ProcessoController.find)
 routes.get('/processo-list/:page', AuthMiddleware.checkToken, ProcessoController.findAll)
-
 // Update Routes
 routes.post('/obras/', ProcessoController.updateObras)
 routes.post('/perfil/', AuthMiddleware.checkToken, PerfilController.updateInfo)

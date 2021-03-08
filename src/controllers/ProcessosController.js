@@ -192,5 +192,26 @@ module.exports = {
         const result = await Processos.findById(processo_id)
         req.result = result
         return next()
+    },
+    async findProcessoById(req, res, next){
+        const { processo_id } = req.body
+        const result = await Processos.findById(processo_id)
+        req.result = result
+        return next()
+    },
+    async obrasAutoria(req, res, next){
+        try {
+
+            const { processo_id, obras } = req.body
+            const result = await Processos.findById(processo_id)
+            obras.forEach(obra => {
+                result.obras[result.obras.findIndex(el=>el.id === obra._id)].status = obra.status
+            })
+            await result.save()
+            return res.status(200).json({message:"ok"})
+            
+        } catch (error) {
+            return res.status(400).json({error})        
+        }
     }
 };
