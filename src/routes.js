@@ -64,7 +64,8 @@ routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)
 routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
-routes.post('/autoria/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria)
+routes.post('/autoriaObras/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria)
+routes.post('/autoriaFonogramas/', AuthMiddleware.checkToken, ProcessoController.fonogramasAutoria)
 
 
 // Read Routes

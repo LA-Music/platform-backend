@@ -11,8 +11,8 @@ var obraSchema = new Schema({
     execucao:String,
     status:{
         type:String,
-        default:"ativado",
-        enum:["ativado","desativado","removido"]
+        default:"desativado",
+        enum:["ativado","desativado","removido","contratado"]
     }
 })
 var commentSchema = new Schema({

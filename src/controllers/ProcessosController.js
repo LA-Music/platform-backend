@@ -201,11 +201,24 @@ module.exports = {
     },
     async obrasAutoria(req, res, next){
         try {
-
             const { processo_id, obras } = req.body
             const result = await Processos.findById(processo_id)
             obras.forEach(obra => {
                 result.obras[result.obras.findIndex(el=>el.id === obra._id)].status = obra.status
+            })
+            await result.save()
+            return res.status(200).json({message:"ok"})
+            
+        } catch (error) {
+            return res.status(400).json({error})        
+        }
+    },
+    async fonogramasAutoria(req, res, next){
+        try {
+            const { processo_id, fonogramas } = req.body
+            const result = await Processos.findById(processo_id)
+            fonogramas.forEach(fonograma => {
+                result.fonogramas[result.fonogramas.findIndex(el=>el.id === fonograma._id)].status = fonograma.status
             })
             await result.save()
             return res.status(200).json({message:"ok"})
