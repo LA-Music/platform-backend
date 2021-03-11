@@ -36,10 +36,17 @@ module.exports = {
                     id_perfil
                 })
                 req.credito_id = credito._id
-                req.id_perfil = id_perfil                
-                const lead = await Lead.findById(lead_id)
-                lead.completou = true
-                const updated = await lead.save()
+                req.id_perfil = id_perfil
+                
+                if(lead_id){
+                    try {
+                        const lead = await Lead.findById(lead_id)
+                        lead.completou = true
+                        const updated = await lead.save()    
+                    } catch (error) {
+                        
+                    }
+                }                
 
                 let transporter = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
