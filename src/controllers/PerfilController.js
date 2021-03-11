@@ -2,7 +2,8 @@ require('dotenv').config()
 var nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars')
 const Perfil = require('../models/Perfil')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const Processos = require('../models/Processos');
 
 module.exports = {
     async store(req, res){
@@ -96,6 +97,17 @@ module.exports = {
             req.email = result.email
             return next()                   
         })
+    },
+    async getPerfilByToken(req, res, next){
+        const {profile_id} = req.decoded;
+        // todo try catch
+        Perfil.findById(profile_id, function (err, result) {
+            if(err){
+                return res.status(400).json({message: "Perfil Invalid"})
+            }                 
+            req.perfil = result
+            return next()  
+        }).lean()
     },
     async createToken(req, res){
         const {email, senha} = req.body
@@ -227,88 +239,92 @@ module.exports = {
             });
     },
     async contratarProSistema(req,res,next){    
-        const { nome, cpf} =req.body
-        const {profile_id} = req.decoded;
-        const perfil = await Perfil.findById(profile_id)
-        perfil.artistas.push({nome,cpf,contratado:false})
 
-        const updated = await perfil.save()
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: process.env.REMETENTE_EMAIL,
-              pass: process.env.REMETENTE_SENHA
-            }
-          });
-        // send email
-        const mailOptions = {
-            to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br'],
-            // to: ['matheuscmilo@gmail.com'],
-            from: process.env.FROM_EMAIL,
-            subject: "Contratar LA Pro",
-            text: `Olá admin \n 
-            O usuário: ${perfil.nome}, da editora: ${perfil.nome_empresa}, cpf: ${perfil.cpf} quer contratar o LA Pro!
+        // const { nome, cpf} =req.body
+        // const {profile_id} = req.decoded;
+        // const perfil = await Perfil.findById(profile_id)
+        // perfil.artistas.push({nome,cpf,contratado:false})
+
+        // const updated = await perfil.save()
+        // var transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //       user: process.env.REMETENTE_EMAIL,
+        //       pass: process.env.REMETENTE_SENHA
+        //     }
+        //   });
+        // // send email
+        // const mailOptions = {
+        //     // to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br'],
+        //     to: ['matheuscmilo@gmail.com'],
+        //     from: process.env.FROM_EMAIL,
+        //     subject: "Contratar LA Pro",
+        //     text: `Olá admin \n 
+        //     O usuário: ${perfil.nome}, da editora: ${perfil.nome_empresa}, cpf: ${perfil.cpf} quer contratar o LA Pro!
             
-            Favor entrar em contato pelo email: ${perfil.email} ou telefone: ${perfil.telefone}
+        //     Favor entrar em contato pelo email: ${perfil.email} ou telefone: ${perfil.telefone}
             
-            \n
-            \n
-            Nome do artista: ${nome}
-            \n
-            Cpf do artista: ${cpf}
-            \n\n
+        //     \n
+        //     \n
+        //     Nome do artista: ${nome}
+        //     \n
+        //     Cpf do artista: ${cpf}
+        //     \n\n
 
-            att, Sistema LA Music.
-            `
-        };                        
 
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              res.status(500).json({error})
-            }
-            req.email = perfil.email
-            return next()                   
-            res.status(200).json({message: 'Pedido registrado'})
-        });
+        //     att, Sistema LA Music.
+        //     `
+        // };                        
+
+
+
+        // transporter.sendMail(mailOptions, function(error, info){
+        //     if (error) {
+        //       res.status(500).json({error})
+        //     }
+        //     req.email = perfil.email
+        //     return res.status(200).json({message: 'Pedido registrado'})
+        //     return next()                   
+        // });
 
     },
     async contratarProCliente(req,res){
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: process.env.REMETENTE_EMAIL,
-              pass: process.env.REMETENTE_SENHA
-            }
-        });
+        // var transporter = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //       user: process.env.REMETENTE_EMAIL,
+        //       pass: process.env.REMETENTE_SENHA
+        //     }
+        // });
         
-        transporter.use('compile', hbs({
-            viewEngine: {
-                extName: '.hbs',
-                partialsDir: 'views',//your path, views is a folder inside the source folder
-                layoutsDir: 'views',
-                defaultLayout: ''//set this one empty and provide your template below,
-              },
-            viewPath: 'views'
-        }))
+        // transporter.use('compile', hbs({
+        //     viewEngine: {
+        //         extName: '.hbs',
+        //         partialsDir: 'views',//your path, views is a folder inside the source folder
+        //         layoutsDir: 'views',
+        //         defaultLayout: ''//set this one empty and provide your template below,
+        //       },
+        //     viewPath: 'views'
+        // }))
 
-        const mailOptions = {
-            to: req.email,
-            // to:"matheuscmilo@gmail.com",
-            from: process.env.FROM_EMAIL,
-            subject: "Contratar LA Pro para artista",
-            template: 'contratar',
-            context: {
-                titulo: "CONTRATAR LA PRO PARA ARTISTA"
-            },
-        };   
+        // const mailOptions = {
+        //     // to: req.email,
+        //     to:"matheuscmilo@gmail.com",
+        //     from: process.env.FROM_EMAIL,
+        //     subject: "Contratar LA Pro para artista",
+        //     template: 'contratar',
+        //     context: {
+        //         titulo: "CONTRATAR LA PRO PARA ARTISTA"
+        //     },
+        // };   
 
-        transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              return res.status(500).json({error})
-            }                            
-        });
+        // transporter.sendMail(mailOptions, function(error, info){
+        //     if (error) {
+        //       return res.status(500).json({error})
+        //     }                            
+        // });
 
-        res.status(200).json({message: 'ok'});
+        // res.status(200).json({message: 'ok'});
 
     },
     async updateInfo(req, res){

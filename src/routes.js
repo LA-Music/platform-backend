@@ -14,7 +14,8 @@ const PerfilController = require('./controllers/PerfilController')
 const Mailer = require('./services/Mailer')
 const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
-const UpdateFonograma = require('./services/UpdateFonograma')
+const UpdateFonograma = require('./services/UpdateFonograma');
+const Perfil = require('./models/Perfil');
 
 routes.post('/proxy',async (req,res)=>{  
   const url = "https://gpt2-compositor-eroai6oftq-ue.a.run.app/"
@@ -63,9 +64,11 @@ routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)
-routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
-routes.post('/autoriaObras/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria)
-routes.post('/autoriaFonogramas/', AuthMiddleware.checkToken, ProcessoController.fonogramasAutoria)
+// routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
+// routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.getPerfilByToken, ProcessoController.contratarProSistema)
+routes.post('/autoriaObras/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria, PerfilController.getPerfilByToken, ProcessoController.contratarObras)
+routes.post('/autoriaFonogramas/', AuthMiddleware.checkToken, ProcessoController.fonogramasAutoria, PerfilController.getPerfilByToken, ProcessoController.contratarFonogramas)
+routes.post('/autoriaList/', AuthMiddleware.checkToken, ProcessoController.listProcesso)
 
 
 // Read Routes

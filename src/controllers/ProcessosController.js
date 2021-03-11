@@ -1,4 +1,6 @@
 const Processos = require('../models/Processos');
+var nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars')
 require('dotenv').config()
 
 module.exports = {
@@ -207,6 +209,7 @@ module.exports = {
                 result.obras[result.obras.findIndex(el=>el.id === obra._id)].status = obra.status
             })
             await result.save()
+            return next()
             return res.status(200).json({message:"ok"})
             
         } catch (error) {
@@ -221,10 +224,126 @@ module.exports = {
                 result.fonogramas[result.fonogramas.findIndex(el=>el.id === fonograma._id)].status = fonograma.status
             })
             await result.save()
+            return next()
+
             return res.status(200).json({message:"ok"})
             
         } catch (error) {
             return res.status(400).json({error})        
         }
-    }
+    },
+    async contratarObras(req,res,next){    
+        // Colocar um passo anterior que obtem os dados do Perfil
+        const perfil = req.perfil
+        const { processo_id } = req.body
+        // Listar obras e fonogramas com status = 'contratado'
+        
+        const result = await Processos.findById(processo_id).lean()
+        if(result){
+        const obras = result.obras.filter(obra => obra.status === "contratado");
+        if(obras){
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.REMETENTE_EMAIL,
+                    pass: process.env.REMETENTE_SENHA
+                }
+            });
+            // send email
+            transporter.use('compile', hbs({
+                viewEngine: {
+                    extName: '.hbs',
+                    partialsDir: 'views',//your path, views is a folder inside the source folder
+                    layoutsDir: 'views',
+                    defaultLayout: ''//set this one empty and provide your template below,
+                },
+                viewPath: 'views'
+            }))
+            const mailOptions = {
+                to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
+                // to: ['matheuscmilo@gmail.com'],
+                from: process.env.FROM_EMAIL,
+                subject: "Contratar LA Pro",
+                template: "contratarPro",
+                context: {
+                    titulo: "PEDIDO DE CONTRATAÇÃO",
+                    perfil:perfil,
+                    result:result,
+                    lista:obras,
+                    objeto:"Obras"
+                }
+            };                        
+            
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    res.status(500).json({error})
+                }
+            });
+        }  
+        }              
+        return res.status(200).json({message:"ok"})
+        },
+        async contratarFonogramas(req,res,next){    
+            // Colocar um passo anterior que obtem os dados do Perfil
+            const perfil = req.perfil
+            const { processo_id } = req.body
+            // Listar fonogramas e fonogramas com status = 'contratado'
+            const result = await Processos.findById(processo_id).lean()
+            if(result){
+                const fonogramas = result.fonogramas.filter(fonograma => fonograma.status === "contratado");
+                if(fonogramas){
+                    var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        auth: {
+                            user: process.env.REMETENTE_EMAIL,
+                            pass: process.env.REMETENTE_SENHA
+                        }
+                    });
+                    // send email
+                    transporter.use('compile', hbs({
+                        viewEngine: {
+                            extName: '.hbs',
+                            partialsDir: 'views',//your path, views is a folder inside the source folder
+                            layoutsDir: 'views',
+                            defaultLayout: ''//set this one empty and provide your template below,
+                        },
+                        viewPath: 'views'
+                    }))
+                    const mailOptions = {
+                        to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
+                        // to: ['matheuscmilo@gmail.com'],
+                        from: process.env.FROM_EMAIL,
+                        subject: "Contratar LA Pro",
+                        template: "contratarPro",
+                        context: {
+                            titulo: "PEDIDO DE CONTRATAÇÃO",
+                            perfil:perfil,
+                            result:result,
+                            lista:fonogramas,
+                            objeto:"Fonogramas"
+                        }
+                    };                        
+                    
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            res.status(500).json({error})
+                        }
+                    });
+                }                
+            }
+            return res.status(200).json({message:"ok"})
+            },
+        
+        async listProcesso(req,res,next){    
+            
+            const { processo_id } = req.body
+            console.log(processo_id)
+            // Listar obras e fonogramas com status = 'contratado'
+            
+            const result = await Processos.findById(processo_id)
+            const obras = result.obras.filter(obra => obra.status === "contratado");
+            
+        return res.status(200).json({result})
+        
+    },
 };
