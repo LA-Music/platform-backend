@@ -64,8 +64,6 @@ routes.post('/registrar', PerfilController.store)
 routes.post('/autentificar', PerfilController.createToken)
 routes.post('/resetarSenha', PerfilController.recover)
 routes.post('/reset/:token', PerfilController.resetPassword)
-// routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.contratarProSistema, PerfilController.contratarProCliente)
-// routes.post('/contratar/', AuthMiddleware.checkToken, PerfilController.getPerfilByToken, ProcessoController.contratarProSistema)
 routes.post('/autoriaObras/', AuthMiddleware.checkToken, ProcessoController.obrasAutoria, PerfilController.getPerfilByToken, ProcessoController.contratarObras)
 routes.post('/autoriaFonogramas/', AuthMiddleware.checkToken, ProcessoController.fonogramasAutoria, PerfilController.getPerfilByToken, ProcessoController.contratarFonogramas)
 routes.post('/autoriaList/', AuthMiddleware.checkToken, ProcessoController.listProcesso)
@@ -74,7 +72,7 @@ routes.post('/autoriaList/', AuthMiddleware.checkToken, ProcessoController.listP
 // Read Routes
 routes.get('/perfil', AuthMiddleware.checkToken, AuthMiddleware.checkPro, PerfilController.find)
 routes.get('/reset/:token', PerfilController.reset)
-
+routes.get('/perfis', AuthMiddleware.checkToken, AuthMiddleware.checkAdmin, PerfilController.findAll)
 routes.get('/credito-retido/', AuthMiddleware.checkToken, PerfilController.getEmailByToken, CreditoController.findCredito)
 routes.get('/credito-retido/:chave/:valor', AuthMiddleware.checkToken, CreditoController.find)
 routes.get('/credito-retido-list/:page', AuthMiddleware.checkToken, CreditoController.findPaginate)

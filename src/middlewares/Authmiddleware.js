@@ -41,8 +41,21 @@ async function checkPro(req, res, next) {
     });
 }
 
+async function checkAdmin(req, res, next) {
+  const {profile_id} = req.decoded;
+  const {papel} = await Perfil.findById(profile_id).exec();
+
+  if (papel === "admin") {
+    return next()
+  }
+  return res.json({
+      success: false,
+      message: 'Token not Authorized'
+    });
+}
+
 module.exports = {
   checkToken: checkToken,
-  checkPro: checkPro
-
+  checkPro: checkPro,
+  checkAdmin: checkAdmin
 }

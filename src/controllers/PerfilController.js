@@ -125,8 +125,32 @@ module.exports = {
         });
     },
     async findAll(req, res){
-    // todo
-      return res.send({msg:"to-do"})
+        const { page } = req.params
+        const options = {
+            page,
+            sort: { createdAt: -1},
+            limit: process.env.PAGINATION_LIMIT
+        }
+
+        await Perfil.paginate({}, options, (err, result)=>{
+            if(err){
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                result.docs = result.docs.map(element => {
+                    return {
+                        _id:element._id,
+                        nome:element.nome,
+                        email:element.email,
+                        cpf:element.cpf,
+                        telefone:element.telefone,
+                        nome_empresa:element.nome_empresa,
+                        papel:element.papel,
+                        createdAt:((element.createdAt.getDate() )) + "/" + ((element.createdAt.getMonth() + 1)) + "/" + element.createdAt.getFullYear()
+                    }
+                });
+                return res.json(result)
+            }
+        })
     },
     async recover(req, res, next){
         
@@ -339,5 +363,5 @@ module.exports = {
            return res.status(200).json({message:"ok"});
           }
         })
-    },
+    }
 };
