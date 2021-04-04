@@ -15,6 +15,7 @@ const Mailer = require('./services/Mailer')
 const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
 const UpdateFonograma = require('./services/UpdateFonograma');
+const UpdateProcesso = require('./services/UpdateProcesso');
 const Perfil = require('./models/Perfil');
 
 routes.post('/proxy',async (req,res)=>{  
@@ -98,7 +99,7 @@ routes.post('/perfil/', AuthMiddleware.checkToken, PerfilController.updateInfo)
 routes.post('/updatePuppet/', AuthMiddleware.checkToken, ProcessoController.findProcessoById, CreditoController.findById, async (req, res)=>{
   const { processo_id } = req.body
   try{
-    await Puppet(req.credito,processo_id)
+    Puppet(req.credito, processo_id)
     return res.status(200).json({message:"Ok"})
   }catch (error){
     console.log("errou!")
@@ -106,6 +107,7 @@ routes.post('/updatePuppet/', AuthMiddleware.checkToken, ProcessoController.find
   }
   
 })
+routes.get('/listEmails/', CreditoController.listEmails)
 // Delete Routes
 
 module.exports = routes;

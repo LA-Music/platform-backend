@@ -3,6 +3,7 @@ const Lead = require('../models/Lead');
 const moment = require('moment');
 var nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars')
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 require('dotenv').config()
 
@@ -186,11 +187,40 @@ module.exports = {
             if(err){
                 return res.status(400).json({message: "Bad Request"});                
             }else{
-                result.docs = result.docs.map(element => {
+                result = result.docs.map(element => {
                     return {_id:element._id, nome:element.nome, createdAt:moment(element.createdAt).format('YYYY-MM-DD')}
                 });                
                 // console.log(parseTimeline(result.docs,"createdAt"))
-                return res.json(parseTimeline(result.docs,"createdAt"))
+                return res.json(parseTimeline(result,"createdAt"))
+            }
+        })
+    },
+    async listEmails(req, res){
+        
+        const options = {            
+            sort: { email: 1},
+            limit:1000
+        }
+        const csvWriter = createCsvWriter({
+            path: './emails.csv',
+            header: [
+                    {id: 'email', title: 'EMAILS'}
+            ]
+        });
+        await Credito.paginate({}, options, (err, result)=>{
+            if(err){
+                console.log(err)
+                return res.status(400).json({message: "Bad Request"});                
+            }else{
+                records = result.docs.map(element => {
+                    return {email: element.email}
+                }); 
+
+                csvWriter.writeRecords(records.filter((value, index) => records.indexOf(value) === index))
+                .then(() => {
+                    console.log('...Done');
+                });
+                return res.json({records})
             }
         })
     },
