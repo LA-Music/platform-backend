@@ -15,7 +15,7 @@ const Mailer = require('./services/Mailer')
 const Puppet = require('./services/Puppet')
 const UpdatePuppet = require('./services/UpdatePuppet')
 const UpdateFonograma = require('./services/UpdateFonograma');
-const UpdateProcesso = require('./services/UpdateProcesso');
+// const UpdateProcesso = require('./services/UpdateProcesso');
 const Perfil = require('./models/Perfil');
 
 // routes.post('/proxy',async (req,res)=>{  
