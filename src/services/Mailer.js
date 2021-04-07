@@ -2,6 +2,7 @@ require('dotenv').config()
 const Emails = require('../models/Email');
 var nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
+const Email = require('../models/Email');
 
 module.exports = {
     async send(mailOptions){
@@ -36,5 +37,21 @@ module.exports = {
             })
         }
       });
-    }
+    },
+    async findAll(req, res){
+      const { page } = req.params
+      const options = {
+          page,
+          sort: { createdAt: -1},
+          limit: process.env.PAGINATION_LIMIT
+      }
+
+      await Emails.paginate({}, options, (err, result)=>{
+          if(err){
+              return res.status(400).json({message: "Bad Request"});                
+          }else{
+              return res.json(result)
+          }
+      })
+  }
 };
