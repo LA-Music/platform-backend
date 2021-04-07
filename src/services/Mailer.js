@@ -1,6 +1,7 @@
 require('dotenv').config()
+const Emails = require('../models/Email');
 var nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars')
+const hbs = require('nodemailer-express-handlebars');
 
 module.exports = {
     async send(mailOptions){
@@ -21,22 +22,19 @@ module.exports = {
           },
         viewPath: 'views'
       }))
-      // var mailOptions = {
-      //   from: remetente,
-      //   to: destinatario,
-      //   subject: assunto,
-      //   text: mensagem
-      // };
 
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            console.log(error)
-        //   res.status(400).json({error})
+            Emails.create({
+              mailOptions:mailOptions,
+              status:error
+            })
         } else {
-            console.log("Sucesso")
-        //   res.status(200).json({msg:info.response})
+            Emails.create({
+              mailOptions:mailOptions,
+              status:"Sucesso"
+            })
         }
       });
-      console.log("...")
     }
 };

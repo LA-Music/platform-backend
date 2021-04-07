@@ -1,18 +1,11 @@
 require('dotenv').config()
-var nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars')
 const Perfil = require('../models/Perfil')
 const jwt = require('jsonwebtoken');
-const Processos = require('../models/Processos');
 const mailer = require('../services/Mailer')
 module.exports = {
     async store(req, res){
         const { nome, papel, email, senha, cpf, telefone, termos, newsletter, nome_empresa} = req.body
         const status = 0
-        // Ao invés de gmail
-        // Sendgrid
-        // Mailgun
-        // const usuarioExists = false
         const usuarioExists = await Perfil.findOne({
                 $and:[{email}]
             })
@@ -33,23 +26,7 @@ module.exports = {
                         nome_empresa:nome_empresa                                                
                     })
                     if(papel === "pro"){
-                        var transporter = nodemailer.createTransport({
-                            service: 'gmail',
-                            auth: {
-                              user: process.env.REMETENTE_EMAIL,
-                              pass: process.env.REMETENTE_SENHA
-                            }
-                          });
-                          // send email
-                        transporter.use('compile', hbs({
-                            viewEngine: {
-                                extName: '.hbs',
-                                partialsDir: 'views',//your path, views is a folder inside the source folder
-                                layoutsDir: 'views',
-                                defaultLayout: ''//set this one empty and provide your template below,
-                              },
-                            viewPath: 'views'
-                        }))
+
                         const mailOptions = {
                             to: email,
                             // to:'matheuscmilo@gmail.com',
@@ -61,12 +38,8 @@ module.exports = {
                                 nome: nome,
                                 editora: nome_empresa
                             },
-                        };                        
-                        transporter.sendMail(mailOptions, function(error, info){
-                            if (error) {
-                              return res.status(400).json({message: error})
-                            }                            
-                        });
+                        }; 
+                        mailer.send(mailOptions)
                     }                    
                     return res.status(200).json({message: "ok"})
                 } catch (error) {
@@ -167,14 +140,14 @@ module.exports = {
                     let link = "https://app.lamusic.com.br/pro/reset#" + user.resetPasswordToken;
 
                     const mailOptions = {
-                        // to: user.email,
-                        to:'matheuscmilo@gmail.com',
+                        to: user.email,
+                        // to:'matheuscmilo@gmail.com',
                         from: process.env.REMETENTE_EMAIL,
                         subject: "Pedido de troca de senha",
                         template: 'linkTrocaSenha',
                         context: {
                             titulo: "PEDIDO DE TROCA DE SENHA",
-                            nome: "Matheus",
+                            nome: user.nome,
                             link: link
                         },
                     };                        
@@ -205,24 +178,7 @@ module.exports = {
                 // Save
                 user.save((err) => {
                     if (err) return res.status(500).json({message: err.message});
-                    
-                    var transporter = nodemailer.createTransport({
-                        service: 'gmail',
-                        auth: {
-                          user: process.env.REMETENTE_EMAIL,
-                          pass: process.env.REMETENTE_SENHA
-                        }
-                      });
 
-                     transporter.use('compile', hbs({
-                        viewEngine: {
-                            extName: '.hbs',
-                            partialsDir: 'views',//your path, views is a folder inside the source folder
-                            layoutsDir: 'views',
-                            defaultLayout: ''//set this one empty and provide your template below,
-                          },
-                        viewPath: 'views'
-                    }))
                     const mailOptions = {
                         to: user.email,
                         from: process.env.REMETENTE_EMAIL,
@@ -233,12 +189,8 @@ module.exports = {
                             nome: user.nome,
                         },
                     };        
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                          res.status(500).json({error})
-                        }
-                        res.status(200).json({message: 'Email de confirmação foi enviado para: ' + user.email + '.'});
-                    });
+                    mailer.send(mailOptions)
+                    res.status(200).json({message:"ok"})
                 });
             });
     },

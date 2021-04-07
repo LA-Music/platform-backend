@@ -1,6 +1,5 @@
 const Processos = require('../models/Processos');
-var nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars')
+const mailer = require('../services/Mailer')
 require('dotenv').config()
 
 module.exports = {
@@ -226,7 +225,7 @@ module.exports = {
             await result.save()
             return next()
 
-            return res.status(200).json({message:"ok"})
+            // return res.status(200).json({message:"ok"})
             
         } catch (error) {
             return res.status(400).json({error})        
@@ -242,23 +241,6 @@ module.exports = {
         if(result){
         const obras = result.obras.filter(obra => obra.status === "contratado");
         if(obras){
-            var transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: process.env.REMETENTE_EMAIL,
-                    pass: process.env.REMETENTE_SENHA
-                }
-            });
-            // send email
-            transporter.use('compile', hbs({
-                viewEngine: {
-                    extName: '.hbs',
-                    partialsDir: 'views',//your path, views is a folder inside the source folder
-                    layoutsDir: 'views',
-                    defaultLayout: ''//set this one empty and provide your template below,
-                },
-                viewPath: 'views'
-            }))
             const mailOptions = {
                 to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
                 // to: ['matheuscmilo@gmail.com'],
@@ -273,12 +255,8 @@ module.exports = {
                     objeto:"Obras"
                 }
             };                        
-            
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                    res.status(500).json({error})
-                }
-            });
+            mailer.send(mailOptions)
+
         }  
         }              
         return res.status(200).json({message:"ok"})
@@ -292,23 +270,7 @@ module.exports = {
             if(result){
                 const fonogramas = result.fonogramas.filter(fonograma => fonograma.status === "contratado");
                 if(fonogramas){
-                    var transporter = nodemailer.createTransport({
-                        service: 'gmail',
-                        auth: {
-                            user: process.env.REMETENTE_EMAIL,
-                            pass: process.env.REMETENTE_SENHA
-                        }
-                    });
-                    // send email
-                    transporter.use('compile', hbs({
-                        viewEngine: {
-                            extName: '.hbs',
-                            partialsDir: 'views',//your path, views is a folder inside the source folder
-                            layoutsDir: 'views',
-                            defaultLayout: ''//set this one empty and provide your template below,
-                        },
-                        viewPath: 'views'
-                    }))
+                   
                     const mailOptions = {
                         to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
                         // to: ['matheuscmilo@gmail.com'],
@@ -324,11 +286,7 @@ module.exports = {
                         }
                     };                        
                     
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                            res.status(500).json({error})
-                        }
-                    });
+                    mailer.send(mailOptions)
                 }                
             }
             return res.status(200).json({message:"ok"})

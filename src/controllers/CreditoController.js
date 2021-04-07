@@ -1,8 +1,8 @@
 const Credito = require('../models/Credito');
 const Lead = require('../models/Lead');
 const moment = require('moment');
-var nodemailer = require('nodemailer');
-const hbs = require('nodemailer-express-handlebars')
+const mailer = require('../services/Mailer')
+
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 require('dotenv').config()
@@ -48,28 +48,7 @@ module.exports = {
                         
                     }
                 }                
-
-                let transporter = nodemailer.createTransport({
-                    host: 'smtp.gmail.com',
-                    port: 587,
-                    secure: false,
-                    requireTLS: true,
-                    auth: {
-                        user: process.env.REMETENTE_EMAIL,
-                        pass: process.env.REMETENTE_SENHA
-                    }
-                });
                 
-                // send email
-                transporter.use('compile', hbs({
-                    viewEngine: {
-                        extName: '.hbs',
-                        partialsDir: 'views',//your path, views is a folder inside the source folder
-                        layoutsDir: 'views',
-                        defaultLayout: ''//set this one empty and provide your template below,
-                      },
-                    viewPath: 'views'
-                }))
                 const mailOptions = {
                     // to:'matheuscmilo@gmail.com',
                     to: email,
@@ -84,33 +63,29 @@ module.exports = {
                         associacao,
                         nome_produtor
                     },
-                };                        
-                transporter.sendMail(mailOptions, function(error, info){
-                    if (error) {
-                      return res.status(500).json({error})
-                    }      
-                    // const assunto = "Credito Retido"
-                    // const mensagem = `<h1>Novo Credito Retido</h1> <ul><li><b>Id:</b>${req.credito_id}</li><li><b>Nome:</b>${req.body.nome}</li><li><b>Email:</b>${req.body.email}</li><li><b>Cpf:</b>${req.body.cpf}</li><li><b>Telefone:</b>${req.body.telefone}</li><li><b>Nome Artístico:</b>${req.body.nome_artistico}</li><li><b>Associação:</b>${req.body.associacao}</li></ul>`
-                    // var maillist = [
-                    //     'luiz@lamusic.com.br',
-                    //     'rangel@lamusic.com.br',
-                    //     'matheus@lamusic.com.br'
-                    // ];  
+                };
+                mailer.send(mailOptions)
 
-                    // var mailOptions = {
-                    //     from: process.env.REMETENTE_EMAIL,
-                    //     to: maillist,
-                    //     subject: assunto,
-                    //     html: mensagem
-                    // };
+                
+                    const assunto = "Credito Retido"
+                    const mensagem = `<h1>Novo Credito Retido</h1> <ul><li><b>Id:</b>${req.credito_id}</li><li><b>Nome:</b>${req.body.nome}</li><li><b>Email:</b>${req.body.email}</li><li><b>Cpf:</b>${req.body.cpf}</li><li><b>Telefone:</b>${req.body.telefone}</li><li><b>Nome Artístico:</b>${req.body.nome_artistico}</li><li><b>Associação:</b>${req.body.associacao}</li></ul>`
+                    var maillist = [
+                        'luiz@lamusic.com.br',
+                        'rangel@lamusic.com.br',
+                        'matheus@lamusic.com.br'
+                    ];  
 
-                    // transporter.sendMail(mailOptions, function(error, info){
-                    //     if (error) {
-                    //     res.status(400).json({error})
-                    //     }
-                    // });
-                    return next()
-                });
+                    mailOptions = {
+                        from: process.env.REMETENTE_EMAIL,
+                        to: maillist,
+                        subject: assunto,
+                        html: mensagem
+                    };
+
+                mailer.send(mailOptions)
+                
+                return next()
+               
             } catch (error) {
                 return res.status(400).json({message: error.message})
             }
