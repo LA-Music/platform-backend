@@ -27,7 +27,7 @@ module.exports = {
                     })
                     if(papel === "pro"){
 
-                        const mailOptions = {
+                        mailOptions = {
                             to: email,
                             // to:'matheuscmilo@gmail.com',
                             from: process.env.FROM_EMAIL,
@@ -139,7 +139,7 @@ module.exports = {
                     // send email
                     let link = "https://app.lamusic.com.br/pro/reset#" + user.resetPasswordToken;
 
-                    const mailOptions = {
+                    mailOptions = {
                         to: user.email,
                         // to:'matheuscmilo@gmail.com',
                         from: process.env.REMETENTE_EMAIL,

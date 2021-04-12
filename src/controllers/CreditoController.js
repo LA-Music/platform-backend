@@ -49,7 +49,7 @@ module.exports = {
                     }
                 }                
                 
-                const mailOptions = {
+                mailOptions = {
                     // to:'matheuscmilo@gmail.com',
                     to: email,
                     from: process.env.REMETENTE_EMAIL,

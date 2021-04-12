@@ -241,7 +241,7 @@ module.exports = {
         if(result){
         const obras = result.obras.filter(obra => obra.status === "contratado");
         if(obras){
-            const mailOptions = {
+            mailOptions = {
                 to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
                 // to: ['matheuscmilo@gmail.com'],
                 from: process.env.FROM_EMAIL,
@@ -271,7 +271,7 @@ module.exports = {
                 const fonogramas = result.fonogramas.filter(fonograma => fonograma.status === "contratado");
                 if(fonogramas){
                    
-                    const mailOptions = {
+                    mailOptions = {
                         to: ['matheus@lamusic.com.br','michelle@lamusic.com.br', 'contato@lamusic.com.br', 'lucasleitegoncalves@gmail.com'],
                         // to: ['matheuscmilo@gmail.com'],
                         from: process.env.FROM_EMAIL,
