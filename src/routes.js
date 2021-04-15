@@ -18,14 +18,14 @@ const UpdateFonograma = require('./services/UpdateFonograma');
 // const UpdateProcesso = require('./services/UpdateProcesso');
 const Perfil = require('./models/Perfil');
 
-routes.post('/proxy',async (req,res)=>{  
-  const url = "https://gpt2-compositor-eroai6oftq-ue.a.run.app/"
+// routes.post('/proxy',async (req,res)=>{  
+//   const url = "https://gpt2-compositor-eroai6oftq-ue.a.run.app/"
 
-  const { data } = await axios.post(url, {length: parseInt(req.body.length), temperature: (parseInt(req.body.temperature)/100), prefix: req.body.prefix})
-  console.log(req.body)
-  console.log(data.text)
-  return res.json({text:data.text})
-})
+//   const { data } = await axios.post(url, {length: parseInt(req.body.length), temperature: (parseInt(req.body.temperature)/100), prefix: req.body.prefix})
+//   console.log(req.body)
+//   console.log(data.text)
+//   return res.json({text:data.text})
+// })
 
 routes.get('/',(req,res)=>{
     return res.status(200).json({message:`Server in On -- ${process.env.ENV}`})
