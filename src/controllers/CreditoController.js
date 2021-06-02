@@ -72,7 +72,8 @@ module.exports = {
                     var maillist = [
                         'luiz@lamusic.com.br',
                         'rangel@lamusic.com.br',
-                        'matheus@lamusic.com.br'
+                        'matheus@lamusic.com.br',
+                        'michelle@lamusic.com.br'
                     ];  
 
                     mailOptions = {
